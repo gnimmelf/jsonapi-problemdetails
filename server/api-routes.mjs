@@ -104,7 +104,7 @@ api.get('/fields-conflict', (req, res) => {
     }))
 })
 
-// Kickoff
+// Extract routes
 
 api.stack.forEach(function (middleware) {
     const { route } = middleware
