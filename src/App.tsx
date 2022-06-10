@@ -7,6 +7,7 @@ import { AppContextProvider } from './components/app-context/AppContext';
 import { Notifications } from './components/notifications/Notifications';
 import { ApiList } from './components/api-list/ApiList';
 
+import 'feather-icons';
 import './styles/index.scss';
 
 import { createDebugger } from './helpers/createDebugger';

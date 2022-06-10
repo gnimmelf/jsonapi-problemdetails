@@ -39,7 +39,7 @@ const apiWrapper = ({ apiName, apiCall, addSystemNotification }) => {
         ? await resultParsers[apiName](response)
         : await resultParsers.default(response);
 
-      debug('reponse', response);
+      debug('fetchParsed', { response, result });
     } catch (err) {
       result = { meta: { success: false, catchBlock: true } };
       result.errors = [];

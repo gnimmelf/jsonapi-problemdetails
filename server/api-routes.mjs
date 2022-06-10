@@ -29,9 +29,6 @@ function getFullType(req, type) {
 
 function success(data, props = {}) {
   return {
-    meta: {
-      devModeProp: '//magic-link-redirect/xxxxxxx',
-    },
     ...props,
     ...(data ? { data } : null),
   };
@@ -55,7 +52,12 @@ api.get('/', (req, res) => {
 // 200
 
 api.get('/success-empty', (req, res) => {
-  res.status(200).json(success());
+  res.status(200).json({
+    meta: {
+      exampleDevEnvProp: '//magic-link-redirect/xxxxxxx',
+    },
+    ...success(),
+  });
 });
 
 api.get('/success-data', (req, res) => {

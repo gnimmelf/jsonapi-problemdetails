@@ -51,6 +51,7 @@ const ApiList = (): FC => {
       {Object.entries(apis).map(([name, call]) => (
         <div key={name} className="bl-p-y-2">
           <button
+            type="button"
             disabled={states[name] === PENDING}
             className="bl-button bl-button--primary bl-button--fluid"
             onClick={() => {
@@ -71,7 +72,17 @@ const ApiList = (): FC => {
             style={{ display: states[name] === OPEN ? 'block' : 'none' }}
           >
             {results[name] && (
-              <pre>{JSON.stringify(results[name], null, 2)}</pre>
+              <>
+                <pre>{JSON.stringify(results[name], null, 2)}</pre>
+                <button
+                  type="button"
+                  disabled={states[name] === PENDING}
+                  className="bl-button bl-button--secondary bl-button--fluid"
+                  onClick={() => makeCall(name, call)}
+                >
+                  Reload
+                </button>
+              </>
             )}
           </div>
         </div>
