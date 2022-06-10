@@ -1,9 +1,7 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { BlInfoBox } from 'buflib';
-
-import { useApi } from './useHooks/useApi';
 
 import { AppContextProvider } from './components/app-context/AppContext';
 import { Notifications } from './components/notifications/Notifications';
@@ -16,13 +14,9 @@ import { createDebugger } from './helpers/createDebugger';
 const debug = createDebugger(__filename);
 
 const App = (): FC => {
-  const apis = useApi();
-
-  debug('render', { apis });
-
   return (
-    <div className="bl-container bl-container--small">
-      <AppContextProvider>
+    <AppContextProvider>
+      <div className="bl-container bl-container--small">
         <Notifications />
         <div className="bl-grid bl-grid--two-columns-mobile">
           <BlInfoBox header="JSON API">
@@ -40,9 +34,9 @@ const App = (): FC => {
             </p>
           </BlInfoBox>
         </div>
-        <ApiList apis={apis} />
-      </AppContextProvider>
-    </div>
+        <ApiList />
+      </div>
+    </AppContextProvider>
   );
 };
 

@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import slugify from 'slugify';
 
-import { IDLE, PENDING } from '../constants/fetchStates';
-import { ERROR, MESSAGE, WARNING } from '../constants/systemNotificationTypes';
+import { useNotifications } from './useNotifications';
+
+import { ERROR, WARNING } from '../constants/systemNotificationTypes';
 import { logError } from '../helpers/logError';
 import { createDebugger } from '../helpers/createDebugger';
-
-import { useNotifications } from './useNotifications';
 
 const debug = createDebugger(__filename);
 
@@ -16,12 +15,7 @@ const hyphenToCamelCase = (str) => {
   });
 };
 
-const createAbortController: AbortController = () => {
-  const { AbortController } = window;
-  return new AbortController();
-};
-
-let apiStore = IDLE;
+let apiStore = null;
 
 const resultParsers = {
   default: async (response) => {
@@ -31,7 +25,7 @@ const resultParsers = {
   },
 };
 
-const apiWrapper = ({ apiName, apiCall }) => {
+const apiWrapper = ({ apiName, apiCall, addSystemNotification }) => {
   return async (...args) => {
     const signal = args.find((arg) => arg instanceof AbortSignal) || {};
 
@@ -45,11 +39,9 @@ const apiWrapper = ({ apiName, apiCall }) => {
         ? await resultParsers[apiName](response)
         : await resultParsers.default(response);
 
-      if (result.errors) {
-        result.meta.type = WARNING;
-      }
+      debug('reponse', response);
     } catch (err) {
-      result = { meta: { success: false } };
+      result = { meta: { success: false, catchBlock: true } };
       result.errors = [];
       if (signal.aborted) {
         result.meta.type = WARNING;
@@ -58,17 +50,35 @@ const apiWrapper = ({ apiName, apiCall }) => {
         result.meta.type = ERROR;
         result.errors.push(err.toString());
       }
-      logError(err);
+    }
+
+    if (!result.meta) {
+      result.meta = {};
+    }
+
+    Object.assign(result.meta, {
+      url: response.url,
+      status: response.status,
+    });
+
+    if (!response.ok || result.meta.type === ERROR) {
+      if (response.status >= 500) {
+        addSystemNotification({
+          message: 'Something went wrong!',
+          type: ERROR,
+        });
+      }
     }
 
     return result;
   };
 };
 
-const fetchApis = async () => {
+const fetchApis = async (addSystemNotification) => {
   const getApis = apiWrapper({
     apiName: 'initApis',
     apiCall: () => fetch('/api'),
+    addSystemNotification,
   });
   const { data: routes } = await getApis();
 
@@ -80,6 +90,7 @@ const fetchApis = async () => {
         acc[apiName] = apiWrapper({
           apiName,
           apiCall: () => fetch(`/api${path}`, { method }),
+          addSystemNotification,
         });
       });
     }
@@ -88,17 +99,20 @@ const fetchApis = async () => {
 };
 
 const useApi = () => {
-  const { addSystemError } = useNotifications();
-  const [apis, setApis] = useState({});
+  const { addSystemNotification } = useNotifications();
+  const [apis, setApis] = useState(apiStore || {});
+
   useEffect(() => {
-    if (apiStore === IDLE) {
-      apiStore === PENDING;
-      fetchApis(addSystemError).then((apis) => {
-        apiStore = apis;
-        setApis(apiStore);
+    if (!apiStore) {
+      fetchApis(addSystemNotification).then((wrappedApis) => {
+        apiStore = wrappedApis;
+        setApis(wrappedApis);
       });
     }
   }, []);
+
+  debug('useApi', { apis, apiStore });
+
   return apis;
 };
 

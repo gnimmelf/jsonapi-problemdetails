@@ -70,7 +70,7 @@ const eslint = new ESLint({
 });
 
 const projectPlugin = ({ VERBOSE_LINTING }) => ({
-  name: 'buf',
+  name: 'plugin.project',
   setup(build) {
     let tsStart;
     let fileList;

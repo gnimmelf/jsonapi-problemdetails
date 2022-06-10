@@ -1,0 +1,7 @@
+{
+  "proseWrap": "always",
+  "trailingComma": "all",
+  "singleQuote": true,
+  "jsxSingleQuote": false,
+  "endOfLine": "lf"
+}

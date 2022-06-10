@@ -1,17 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import { BlAccordion } from 'buflib';
-
 import { IDLE, PENDING } from '../../constants/fetchStates';
+
+import { useApi } from '../../useHooks/useApi';
 
 import { createDebugger } from '../../helpers/createDebugger';
 
 const debug = createDebugger(__filename);
 
-const CLOSED = false;
 const OPEN = true;
 
-const ApiList = ({ apis }): FC => {
+const ApiList = (): FC => {
+  const apis = useApi();
+
   const [results, setResults] = useState({});
   const [states, setStates] = useState({});
 
@@ -38,12 +39,12 @@ const ApiList = ({ apis }): FC => {
           ...acc,
           [name]: IDLE,
         }),
-        {}
-      )
+        {},
+      ),
     );
   }, [apis]);
 
-  debug('render', { states, results });
+  debug('render', { apis, states, results });
 
   return (
     <div>

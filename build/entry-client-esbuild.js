@@ -414,7 +414,7 @@
               }
             }
           }
-          var ReactElement = function(type, key, ref, self, source, owner, props) {
+          var ReactElement = function(type, key, ref, self2, source, owner, props) {
             var element = {
               $$typeof: REACT_ELEMENT_TYPE,
               type,
@@ -435,7 +435,7 @@
                 configurable: false,
                 enumerable: false,
                 writable: false,
-                value: self
+                value: self2
               });
               Object.defineProperty(element, "_source", {
                 configurable: false,
@@ -455,7 +455,7 @@
             var props = {};
             var key = null;
             var ref = null;
-            var self = null;
+            var self2 = null;
             var source = null;
             if (config != null) {
               if (hasValidRef(config)) {
@@ -470,7 +470,7 @@
                 }
                 key = "" + config.key;
               }
-              self = config.__self === void 0 ? null : config.__self;
+              self2 = config.__self === void 0 ? null : config.__self;
               source = config.__source === void 0 ? null : config.__source;
               for (propName in config) {
                 if (hasOwnProperty.call(config, propName) && !RESERVED_PROPS.hasOwnProperty(propName)) {
@@ -512,7 +512,7 @@
                 }
               }
             }
-            return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
+            return ReactElement(type, key, ref, self2, source, ReactCurrentOwner.current, props);
           }
           function cloneAndReplaceKey(oldElement, newKey) {
             var newElement = ReactElement(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
@@ -526,7 +526,7 @@
             var props = assign({}, element.props);
             var key = element.key;
             var ref = element.ref;
-            var self = element._self;
+            var self2 = element._self;
             var source = element._source;
             var owner = element._owner;
             if (config != null) {
@@ -564,7 +564,7 @@
               }
               props.children = childArray;
             }
-            return ReactElement(element.type, key, ref, self, source, owner, props);
+            return ReactElement(element.type, key, ref, self2, source, owner, props);
           }
           function isValidElement(object) {
             return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
@@ -986,7 +986,7 @@
             }
             return dispatcher;
           }
-          function useContext(Context) {
+          function useContext2(Context) {
             var dispatcher = resolveDispatcher();
             {
               if (Context._context !== void 0) {
@@ -1012,7 +1012,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect4(create, deps) {
+          function useEffect3(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1028,7 +1028,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useCallback(callback, deps);
           }
-          function useMemo2(create, deps) {
+          function useMemo3(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useMemo(create, deps);
           }
@@ -1789,15 +1789,15 @@
           exports.startTransition = startTransition;
           exports.unstable_act = act;
           exports.useCallback = useCallback;
-          exports.useContext = useContext;
+          exports.useContext = useContext2;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect4;
+          exports.useEffect = useEffect3;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
           exports.useLayoutEffect = useLayoutEffect;
-          exports.useMemo = useMemo2;
+          exports.useMemo = useMemo3;
           exports.useReducer = useReducer;
           exports.useRef = useRef;
           exports.useState = useState4;
@@ -2296,9 +2296,9 @@
           if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
             __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
           }
-          var React4 = require_react();
+          var React5 = require_react();
           var Scheduler = require_scheduler();
-          var ReactSharedInternals = React4.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React5.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           var suppressWarning = false;
           function setSuppressWarning(newSuppressWarning) {
             {
@@ -3699,7 +3699,7 @@
             {
               if (props.value == null) {
                 if (typeof props.children === "object" && props.children !== null) {
-                  React4.Children.forEach(props.children, function(child) {
+                  React5.Children.forEach(props.children, function(child) {
                     if (child == null) {
                       return;
                     }
@@ -11271,7 +11271,7 @@
             }
           }
           var fakeInternalInstance = {};
-          var emptyRefsObject = new React4.Component().refs;
+          var emptyRefsObject = new React5.Component().refs;
           var didWarnAboutStateAssignmentForComponent;
           var didWarnAboutUninitializedState;
           var didWarnAboutGetSnapshotBeforeUpdateWithoutDidUpdate;
@@ -15176,8 +15176,8 @@
           }
           function logCapturedError(boundary, errorInfo) {
             try {
-              var logError2 = showErrorDialog(boundary, errorInfo);
-              if (logError2 === false) {
+              var logError = showErrorDialog(boundary, errorInfo);
+              if (logError === false) {
                 return;
               }
               var error2 = errorInfo.value;
@@ -23004,7 +23004,7 @@
               }
             }
           }
-          var ReactElement = function(type, key, ref, self, source, owner, props) {
+          var ReactElement = function(type, key, ref, self2, source, owner, props) {
             var element = {
               $$typeof: REACT_ELEMENT_TYPE,
               type,
@@ -23025,7 +23025,7 @@
                 configurable: false,
                 enumerable: false,
                 writable: false,
-                value: self
+                value: self2
               });
               Object.defineProperty(element, "_source", {
                 configurable: false,
@@ -23045,7 +23045,7 @@
             var props = {};
             var key = null;
             var ref = null;
-            var self = null;
+            var self2 = null;
             var source = null;
             if (config != null) {
               if (hasValidRef(config)) {
@@ -23057,7 +23057,7 @@
               if (hasValidKey(config)) {
                 key = "" + config.key;
               }
-              self = config.__self === void 0 ? null : config.__self;
+              self2 = config.__self === void 0 ? null : config.__self;
               source = config.__source === void 0 ? null : config.__source;
               for (propName in config) {
                 if (hasOwnProperty.call(config, propName) && !RESERVED_PROPS.hasOwnProperty(propName)) {
@@ -23099,7 +23099,7 @@
                 }
               }
             }
-            return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
+            return ReactElement(type, key, ref, self2, source, ReactCurrentOwner.current, props);
           }
           function cloneAndReplaceKey(oldElement, newKey) {
             var newElement = ReactElement(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
@@ -23115,7 +23115,7 @@
             var props = _assign({}, element.props);
             var key = element.key;
             var ref = element.ref;
-            var self = element._self;
+            var self2 = element._self;
             var source = element._source;
             var owner = element._owner;
             if (config != null) {
@@ -23150,7 +23150,7 @@
               }
               props.children = childArray;
             }
-            return ReactElement(element.type, key, ref, self, source, owner, props);
+            return ReactElement(element.type, key, ref, self2, source, owner, props);
           }
           function isValidElement(object) {
             return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
@@ -23569,7 +23569,7 @@
             }
             return dispatcher;
           }
-          function useContext(Context, unstable_observedBits) {
+          function useContext2(Context, unstable_observedBits) {
             var dispatcher = resolveDispatcher();
             {
               if (unstable_observedBits !== void 0) {
@@ -23598,7 +23598,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect4(create, deps) {
+          function useEffect3(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -23610,7 +23610,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useCallback(callback, deps);
           }
-          function useMemo2(create, deps) {
+          function useMemo3(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useMemo(create, deps);
           }
@@ -24166,12 +24166,12 @@
           exports.lazy = lazy;
           exports.memo = memo;
           exports.useCallback = useCallback;
-          exports.useContext = useContext;
+          exports.useContext = useContext2;
           exports.useDebugValue = useDebugValue;
-          exports.useEffect = useEffect4;
+          exports.useEffect = useEffect3;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useLayoutEffect = useLayoutEffect;
-          exports.useMemo = useMemo2;
+          exports.useMemo = useMemo3;
           exports.useReducer = useReducer;
           exports.useRef = useRef;
           exports.useState = useState4;
@@ -24190,56 +24190,6 @@
       } else {
         module.exports = require_react_development2();
       }
-    }
-  });
-
-  // node_modules/slugify/slugify.js
-  var require_slugify = __commonJS({
-    "node_modules/slugify/slugify.js"(exports, module) {
-      (function(name, root2, factory) {
-        if (typeof exports === "object") {
-          module.exports = factory();
-          module.exports["default"] = factory();
-        } else if (typeof define === "function" && define.amd) {
-          define(factory);
-        } else {
-          root2[name] = factory();
-        }
-      })("slugify", exports, function() {
-        var charMap = JSON.parse(`{"$":"dollar","%":"percent","&":"and","<":"less",">":"greater","|":"or","\xA2":"cent","\xA3":"pound","\xA4":"currency","\xA5":"yen","\xA9":"(c)","\xAA":"a","\xAE":"(r)","\xBA":"o","\xC0":"A","\xC1":"A","\xC2":"A","\xC3":"A","\xC4":"A","\xC5":"A","\xC6":"AE","\xC7":"C","\xC8":"E","\xC9":"E","\xCA":"E","\xCB":"E","\xCC":"I","\xCD":"I","\xCE":"I","\xCF":"I","\xD0":"D","\xD1":"N","\xD2":"O","\xD3":"O","\xD4":"O","\xD5":"O","\xD6":"O","\xD8":"O","\xD9":"U","\xDA":"U","\xDB":"U","\xDC":"U","\xDD":"Y","\xDE":"TH","\xDF":"ss","\xE0":"a","\xE1":"a","\xE2":"a","\xE3":"a","\xE4":"a","\xE5":"a","\xE6":"ae","\xE7":"c","\xE8":"e","\xE9":"e","\xEA":"e","\xEB":"e","\xEC":"i","\xED":"i","\xEE":"i","\xEF":"i","\xF0":"d","\xF1":"n","\xF2":"o","\xF3":"o","\xF4":"o","\xF5":"o","\xF6":"o","\xF8":"o","\xF9":"u","\xFA":"u","\xFB":"u","\xFC":"u","\xFD":"y","\xFE":"th","\xFF":"y","\u0100":"A","\u0101":"a","\u0102":"A","\u0103":"a","\u0104":"A","\u0105":"a","\u0106":"C","\u0107":"c","\u010C":"C","\u010D":"c","\u010E":"D","\u010F":"d","\u0110":"DJ","\u0111":"dj","\u0112":"E","\u0113":"e","\u0116":"E","\u0117":"e","\u0118":"e","\u0119":"e","\u011A":"E","\u011B":"e","\u011E":"G","\u011F":"g","\u0122":"G","\u0123":"g","\u0128":"I","\u0129":"i","\u012A":"i","\u012B":"i","\u012E":"I","\u012F":"i","\u0130":"I","\u0131":"i","\u0136":"k","\u0137":"k","\u013B":"L","\u013C":"l","\u013D":"L","\u013E":"l","\u0141":"L","\u0142":"l","\u0143":"N","\u0144":"n","\u0145":"N","\u0146":"n","\u0147":"N","\u0148":"n","\u014C":"O","\u014D":"o","\u0150":"O","\u0151":"o","\u0152":"OE","\u0153":"oe","\u0154":"R","\u0155":"r","\u0158":"R","\u0159":"r","\u015A":"S","\u015B":"s","\u015E":"S","\u015F":"s","\u0160":"S","\u0161":"s","\u0162":"T","\u0163":"t","\u0164":"T","\u0165":"t","\u0168":"U","\u0169":"u","\u016A":"u","\u016B":"u","\u016E":"U","\u016F":"u","\u0170":"U","\u0171":"u","\u0172":"U","\u0173":"u","\u0174":"W","\u0175":"w","\u0176":"Y","\u0177":"y","\u0178":"Y","\u0179":"Z","\u017A":"z","\u017B":"Z","\u017C":"z","\u017D":"Z","\u017E":"z","\u018F":"E","\u0192":"f","\u01A0":"O","\u01A1":"o","\u01AF":"U","\u01B0":"u","\u01C8":"LJ","\u01C9":"lj","\u01CB":"NJ","\u01CC":"nj","\u0218":"S","\u0219":"s","\u021A":"T","\u021B":"t","\u0259":"e","\u02DA":"o","\u0386":"A","\u0388":"E","\u0389":"H","\u038A":"I","\u038C":"O","\u038E":"Y","\u038F":"W","\u0390":"i","\u0391":"A","\u0392":"B","\u0393":"G","\u0394":"D","\u0395":"E","\u0396":"Z","\u0397":"H","\u0398":"8","\u0399":"I","\u039A":"K","\u039B":"L","\u039C":"M","\u039D":"N","\u039E":"3","\u039F":"O","\u03A0":"P","\u03A1":"R","\u03A3":"S","\u03A4":"T","\u03A5":"Y","\u03A6":"F","\u03A7":"X","\u03A8":"PS","\u03A9":"W","\u03AA":"I","\u03AB":"Y","\u03AC":"a","\u03AD":"e","\u03AE":"h","\u03AF":"i","\u03B0":"y","\u03B1":"a","\u03B2":"b","\u03B3":"g","\u03B4":"d","\u03B5":"e","\u03B6":"z","\u03B7":"h","\u03B8":"8","\u03B9":"i","\u03BA":"k","\u03BB":"l","\u03BC":"m","\u03BD":"n","\u03BE":"3","\u03BF":"o","\u03C0":"p","\u03C1":"r","\u03C2":"s","\u03C3":"s","\u03C4":"t","\u03C5":"y","\u03C6":"f","\u03C7":"x","\u03C8":"ps","\u03C9":"w","\u03CA":"i","\u03CB":"y","\u03CC":"o","\u03CD":"y","\u03CE":"w","\u0401":"Yo","\u0402":"DJ","\u0404":"Ye","\u0406":"I","\u0407":"Yi","\u0408":"J","\u0409":"LJ","\u040A":"NJ","\u040B":"C","\u040F":"DZ","\u0410":"A","\u0411":"B","\u0412":"V","\u0413":"G","\u0414":"D","\u0415":"E","\u0416":"Zh","\u0417":"Z","\u0418":"I","\u0419":"J","\u041A":"K","\u041B":"L","\u041C":"M","\u041D":"N","\u041E":"O","\u041F":"P","\u0420":"R","\u0421":"S","\u0422":"T","\u0423":"U","\u0424":"F","\u0425":"H","\u0426":"C","\u0427":"Ch","\u0428":"Sh","\u0429":"Sh","\u042A":"U","\u042B":"Y","\u042C":"","\u042D":"E","\u042E":"Yu","\u042F":"Ya","\u0430":"a","\u0431":"b","\u0432":"v","\u0433":"g","\u0434":"d","\u0435":"e","\u0436":"zh","\u0437":"z","\u0438":"i","\u0439":"j","\u043A":"k","\u043B":"l","\u043C":"m","\u043D":"n","\u043E":"o","\u043F":"p","\u0440":"r","\u0441":"s","\u0442":"t","\u0443":"u","\u0444":"f","\u0445":"h","\u0446":"c","\u0447":"ch","\u0448":"sh","\u0449":"sh","\u044A":"u","\u044B":"y","\u044C":"","\u044D":"e","\u044E":"yu","\u044F":"ya","\u0451":"yo","\u0452":"dj","\u0454":"ye","\u0456":"i","\u0457":"yi","\u0458":"j","\u0459":"lj","\u045A":"nj","\u045B":"c","\u045D":"u","\u045F":"dz","\u0490":"G","\u0491":"g","\u0492":"GH","\u0493":"gh","\u049A":"KH","\u049B":"kh","\u04A2":"NG","\u04A3":"ng","\u04AE":"UE","\u04AF":"ue","\u04B0":"U","\u04B1":"u","\u04BA":"H","\u04BB":"h","\u04D8":"AE","\u04D9":"ae","\u04E8":"OE","\u04E9":"oe","\u0531":"A","\u0532":"B","\u0533":"G","\u0534":"D","\u0535":"E","\u0536":"Z","\u0537":"E'","\u0538":"Y'","\u0539":"T'","\u053A":"JH","\u053B":"I","\u053C":"L","\u053D":"X","\u053E":"C'","\u053F":"K","\u0540":"H","\u0541":"D'","\u0542":"GH","\u0543":"TW","\u0544":"M","\u0545":"Y","\u0546":"N","\u0547":"SH","\u0549":"CH","\u054A":"P","\u054B":"J","\u054C":"R'","\u054D":"S","\u054E":"V","\u054F":"T","\u0550":"R","\u0551":"C","\u0553":"P'","\u0554":"Q'","\u0555":"O''","\u0556":"F","\u0587":"EV","\u0621":"a","\u0622":"aa","\u0623":"a","\u0624":"u","\u0625":"i","\u0626":"e","\u0627":"a","\u0628":"b","\u0629":"h","\u062A":"t","\u062B":"th","\u062C":"j","\u062D":"h","\u062E":"kh","\u062F":"d","\u0630":"th","\u0631":"r","\u0632":"z","\u0633":"s","\u0634":"sh","\u0635":"s","\u0636":"dh","\u0637":"t","\u0638":"z","\u0639":"a","\u063A":"gh","\u0641":"f","\u0642":"q","\u0643":"k","\u0644":"l","\u0645":"m","\u0646":"n","\u0647":"h","\u0648":"w","\u0649":"a","\u064A":"y","\u064B":"an","\u064C":"on","\u064D":"en","\u064E":"a","\u064F":"u","\u0650":"e","\u0652":"","\u0660":"0","\u0661":"1","\u0662":"2","\u0663":"3","\u0664":"4","\u0665":"5","\u0666":"6","\u0667":"7","\u0668":"8","\u0669":"9","\u067E":"p","\u0686":"ch","\u0698":"zh","\u06A9":"k","\u06AF":"g","\u06CC":"y","\u06F0":"0","\u06F1":"1","\u06F2":"2","\u06F3":"3","\u06F4":"4","\u06F5":"5","\u06F6":"6","\u06F7":"7","\u06F8":"8","\u06F9":"9","\u0E3F":"baht","\u10D0":"a","\u10D1":"b","\u10D2":"g","\u10D3":"d","\u10D4":"e","\u10D5":"v","\u10D6":"z","\u10D7":"t","\u10D8":"i","\u10D9":"k","\u10DA":"l","\u10DB":"m","\u10DC":"n","\u10DD":"o","\u10DE":"p","\u10DF":"zh","\u10E0":"r","\u10E1":"s","\u10E2":"t","\u10E3":"u","\u10E4":"f","\u10E5":"k","\u10E6":"gh","\u10E7":"q","\u10E8":"sh","\u10E9":"ch","\u10EA":"ts","\u10EB":"dz","\u10EC":"ts","\u10ED":"ch","\u10EE":"kh","\u10EF":"j","\u10F0":"h","\u1E62":"S","\u1E63":"s","\u1E80":"W","\u1E81":"w","\u1E82":"W","\u1E83":"w","\u1E84":"W","\u1E85":"w","\u1E9E":"SS","\u1EA0":"A","\u1EA1":"a","\u1EA2":"A","\u1EA3":"a","\u1EA4":"A","\u1EA5":"a","\u1EA6":"A","\u1EA7":"a","\u1EA8":"A","\u1EA9":"a","\u1EAA":"A","\u1EAB":"a","\u1EAC":"A","\u1EAD":"a","\u1EAE":"A","\u1EAF":"a","\u1EB0":"A","\u1EB1":"a","\u1EB2":"A","\u1EB3":"a","\u1EB4":"A","\u1EB5":"a","\u1EB6":"A","\u1EB7":"a","\u1EB8":"E","\u1EB9":"e","\u1EBA":"E","\u1EBB":"e","\u1EBC":"E","\u1EBD":"e","\u1EBE":"E","\u1EBF":"e","\u1EC0":"E","\u1EC1":"e","\u1EC2":"E","\u1EC3":"e","\u1EC4":"E","\u1EC5":"e","\u1EC6":"E","\u1EC7":"e","\u1EC8":"I","\u1EC9":"i","\u1ECA":"I","\u1ECB":"i","\u1ECC":"O","\u1ECD":"o","\u1ECE":"O","\u1ECF":"o","\u1ED0":"O","\u1ED1":"o","\u1ED2":"O","\u1ED3":"o","\u1ED4":"O","\u1ED5":"o","\u1ED6":"O","\u1ED7":"o","\u1ED8":"O","\u1ED9":"o","\u1EDA":"O","\u1EDB":"o","\u1EDC":"O","\u1EDD":"o","\u1EDE":"O","\u1EDF":"o","\u1EE0":"O","\u1EE1":"o","\u1EE2":"O","\u1EE3":"o","\u1EE4":"U","\u1EE5":"u","\u1EE6":"U","\u1EE7":"u","\u1EE8":"U","\u1EE9":"u","\u1EEA":"U","\u1EEB":"u","\u1EEC":"U","\u1EED":"u","\u1EEE":"U","\u1EEF":"u","\u1EF0":"U","\u1EF1":"u","\u1EF2":"Y","\u1EF3":"y","\u1EF4":"Y","\u1EF5":"y","\u1EF6":"Y","\u1EF7":"y","\u1EF8":"Y","\u1EF9":"y","\u2013":"-","\u2018":"'","\u2019":"'","\u201C":"\\"","\u201D":"\\"","\u201E":"\\"","\u2020":"+","\u2022":"*","\u2026":"...","\u20A0":"ecu","\u20A2":"cruzeiro","\u20A3":"french franc","\u20A4":"lira","\u20A5":"mill","\u20A6":"naira","\u20A7":"peseta","\u20A8":"rupee","\u20A9":"won","\u20AA":"new shequel","\u20AB":"dong","\u20AC":"euro","\u20AD":"kip","\u20AE":"tugrik","\u20AF":"drachma","\u20B0":"penny","\u20B1":"peso","\u20B2":"guarani","\u20B3":"austral","\u20B4":"hryvnia","\u20B5":"cedi","\u20B8":"kazakhstani tenge","\u20B9":"indian rupee","\u20BA":"turkish lira","\u20BD":"russian ruble","\u20BF":"bitcoin","\u2120":"sm","\u2122":"tm","\u2202":"d","\u2206":"delta","\u2211":"sum","\u221E":"infinity","\u2665":"love","\u5143":"yuan","\u5186":"yen","\uFDFC":"rial","\uFEF5":"laa","\uFEF7":"laa","\uFEF9":"lai","\uFEFB":"la"}`);
-        var locales = JSON.parse('{"bg":{"\u0419":"Y","\u0426":"Ts","\u0429":"Sht","\u042A":"A","\u042C":"Y","\u0439":"y","\u0446":"ts","\u0449":"sht","\u044A":"a","\u044C":"y"},"de":{"\xC4":"AE","\xE4":"ae","\xD6":"OE","\xF6":"oe","\xDC":"UE","\xFC":"ue","\xDF":"ss","%":"prozent","&":"und","|":"oder","\u2211":"summe","\u221E":"unendlich","\u2665":"liebe"},"es":{"%":"por ciento","&":"y","<":"menor que",">":"mayor que","|":"o","\xA2":"centavos","\xA3":"libras","\xA4":"moneda","\u20A3":"francos","\u2211":"suma","\u221E":"infinito","\u2665":"amor"},"fr":{"%":"pourcent","&":"et","<":"plus petit",">":"plus grand","|":"ou","\xA2":"centime","\xA3":"livre","\xA4":"devise","\u20A3":"franc","\u2211":"somme","\u221E":"infini","\u2665":"amour"},"pt":{"%":"porcento","&":"e","<":"menor",">":"maior","|":"ou","\xA2":"centavo","\u2211":"soma","\xA3":"libra","\u221E":"infinito","\u2665":"amor"},"uk":{"\u0418":"Y","\u0438":"y","\u0419":"Y","\u0439":"y","\u0426":"Ts","\u0446":"ts","\u0425":"Kh","\u0445":"kh","\u0429":"Shch","\u0449":"shch","\u0413":"H","\u0433":"h"},"vi":{"\u0110":"D","\u0111":"d"},"da":{"\xD8":"OE","\xF8":"oe","\xC5":"AA","\xE5":"aa","%":"procent","&":"og","|":"eller","$":"dollar","<":"mindre end",">":"st\xF8rre end"},"nb":{"&":"og","\xC5":"AA","\xC6":"AE","\xD8":"OE","\xE5":"aa","\xE6":"ae","\xF8":"oe"},"it":{"&":"e"},"nl":{"&":"en"},"sv":{"&":"och","\xC5":"AA","\xC4":"AE","\xD6":"OE","\xE5":"aa","\xE4":"ae","\xF6":"oe"}}');
-        function replace(string, options) {
-          if (typeof string !== "string") {
-            throw new Error("slugify: string argument expected");
-          }
-          options = typeof options === "string" ? { replacement: options } : options || {};
-          var locale = locales[options.locale] || {};
-          var replacement = options.replacement === void 0 ? "-" : options.replacement;
-          var trim = options.trim === void 0 ? true : options.trim;
-          var slug = string.normalize().split("").reduce(function(result, ch) {
-            var appendChar = locale[ch] || charMap[ch] || ch;
-            if (appendChar === replacement) {
-              appendChar = " ";
-            }
-            return result + appendChar.replace(options.remove || /[^\w\s$*_+~.()'"!\-:@]+/g, "");
-          }, "");
-          if (options.strict) {
-            slug = slug.replace(/[^A-Za-z0-9\s]/g, "");
-          }
-          if (trim) {
-            slug = slug.trim();
-          }
-          slug = slug.replace(/\s+/g, replacement);
-          if (options.lower) {
-            slug = slug.toLowerCase();
-          }
-          return slug;
-        }
-        replace.extend = function(customMap) {
-          Object.assign(charMap, customMap);
-        };
-        return replace;
-      });
     }
   });
 
@@ -24363,15 +24313,15 @@
         return exports.colors[Math.abs(hash) % exports.colors.length];
       }
       function createDebug(namespace) {
-        function debug6() {
-          if (!debug6.enabled)
+        function debug8() {
+          if (!debug8.enabled)
             return;
-          var self = debug6;
+          var self2 = debug8;
           var curr = +new Date();
           var ms = curr - (prevTime || curr);
-          self.diff = ms;
-          self.prev = prevTime;
-          self.curr = curr;
+          self2.diff = ms;
+          self2.prev = prevTime;
+          self2.curr = curr;
           prevTime = curr;
           var args = new Array(arguments.length);
           for (var i2 = 0; i2 < args.length; i2++) {
@@ -24389,24 +24339,24 @@
             var formatter = exports.formatters[format];
             if (typeof formatter === "function") {
               var val = args[index];
-              match = formatter.call(self, val);
+              match = formatter.call(self2, val);
               args.splice(index, 1);
               index--;
             }
             return match;
           });
-          exports.formatArgs.call(self, args);
-          var logFn = debug6.log || exports.log || console.log.bind(console);
-          logFn.apply(self, args);
+          exports.formatArgs.call(self2, args);
+          var logFn = debug8.log || exports.log || console.log.bind(console);
+          logFn.apply(self2, args);
         }
-        debug6.namespace = namespace;
-        debug6.enabled = exports.enabled(namespace);
-        debug6.useColors = exports.useColors();
-        debug6.color = selectColor(namespace);
+        debug8.namespace = namespace;
+        debug8.enabled = exports.enabled(namespace);
+        debug8.useColors = exports.useColors();
+        debug8.color = selectColor(namespace);
         if (typeof exports.init === "function") {
-          exports.init(debug6);
+          exports.init(debug8);
         }
-        return debug6;
+        return debug8;
       }
       function enable(namespaces) {
         exports.save(namespaces);
@@ -24534,8 +24484,267 @@
     }
   });
 
+  // node_modules/dayjs/dayjs.min.js
+  var require_dayjs_min = __commonJS({
+    "node_modules/dayjs/dayjs.min.js"(exports, module) {
+      !function(t2, e2) {
+        typeof exports == "object" && typeof module != "undefined" ? module.exports = e2() : typeof define == "function" && define.amd ? define(e2) : (t2 = typeof globalThis != "undefined" ? globalThis : t2 || self).dayjs = e2();
+      }(exports, function() {
+        "use strict";
+        var t2 = 1e3, e2 = 6e4, n = 36e5, r = "millisecond", i2 = "second", s = "minute", u = "hour", a = "day", o = "week", f = "month", h = "quarter", c = "year", d = "date", $ = "Invalid Date", l2 = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/, y = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g, M = { name: "en", weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"), months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_") }, m = function(t3, e3, n2) {
+          var r2 = String(t3);
+          return !r2 || r2.length >= e3 ? t3 : "" + Array(e3 + 1 - r2.length).join(n2) + t3;
+        }, g = { s: m, z: function(t3) {
+          var e3 = -t3.utcOffset(), n2 = Math.abs(e3), r2 = Math.floor(n2 / 60), i3 = n2 % 60;
+          return (e3 <= 0 ? "+" : "-") + m(r2, 2, "0") + ":" + m(i3, 2, "0");
+        }, m: function t3(e3, n2) {
+          if (e3.date() < n2.date())
+            return -t3(n2, e3);
+          var r2 = 12 * (n2.year() - e3.year()) + (n2.month() - e3.month()), i3 = e3.clone().add(r2, f), s2 = n2 - i3 < 0, u2 = e3.clone().add(r2 + (s2 ? -1 : 1), f);
+          return +(-(r2 + (n2 - i3) / (s2 ? i3 - u2 : u2 - i3)) || 0);
+        }, a: function(t3) {
+          return t3 < 0 ? Math.ceil(t3) || 0 : Math.floor(t3);
+        }, p: function(t3) {
+          return { M: f, y: c, w: o, d: a, D: d, h: u, m: s, s: i2, ms: r, Q: h }[t3] || String(t3 || "").toLowerCase().replace(/s$/, "");
+        }, u: function(t3) {
+          return t3 === void 0;
+        } }, v2 = "en", D = {};
+        D[v2] = M;
+        var p = function(t3) {
+          return t3 instanceof _;
+        }, S = function t3(e3, n2, r2) {
+          var i3;
+          if (!e3)
+            return v2;
+          if (typeof e3 == "string") {
+            var s2 = e3.toLowerCase();
+            D[s2] && (i3 = s2), n2 && (D[s2] = n2, i3 = s2);
+            var u2 = e3.split("-");
+            if (!i3 && u2.length > 1)
+              return t3(u2[0]);
+          } else {
+            var a2 = e3.name;
+            D[a2] = e3, i3 = a2;
+          }
+          return !r2 && i3 && (v2 = i3), i3 || !r2 && v2;
+        }, w = function(t3, e3) {
+          if (p(t3))
+            return t3.clone();
+          var n2 = typeof e3 == "object" ? e3 : {};
+          return n2.date = t3, n2.args = arguments, new _(n2);
+        }, O = g;
+        O.l = S, O.i = p, O.w = function(t3, e3) {
+          return w(t3, { locale: e3.$L, utc: e3.$u, x: e3.$x, $offset: e3.$offset });
+        };
+        var _ = function() {
+          function M2(t3) {
+            this.$L = S(t3.locale, null, true), this.parse(t3);
+          }
+          var m2 = M2.prototype;
+          return m2.parse = function(t3) {
+            this.$d = function(t4) {
+              var e3 = t4.date, n2 = t4.utc;
+              if (e3 === null)
+                return new Date(NaN);
+              if (O.u(e3))
+                return new Date();
+              if (e3 instanceof Date)
+                return new Date(e3);
+              if (typeof e3 == "string" && !/Z$/i.test(e3)) {
+                var r2 = e3.match(l2);
+                if (r2) {
+                  var i3 = r2[2] - 1 || 0, s2 = (r2[7] || "0").substring(0, 3);
+                  return n2 ? new Date(Date.UTC(r2[1], i3, r2[3] || 1, r2[4] || 0, r2[5] || 0, r2[6] || 0, s2)) : new Date(r2[1], i3, r2[3] || 1, r2[4] || 0, r2[5] || 0, r2[6] || 0, s2);
+                }
+              }
+              return new Date(e3);
+            }(t3), this.$x = t3.x || {}, this.init();
+          }, m2.init = function() {
+            var t3 = this.$d;
+            this.$y = t3.getFullYear(), this.$M = t3.getMonth(), this.$D = t3.getDate(), this.$W = t3.getDay(), this.$H = t3.getHours(), this.$m = t3.getMinutes(), this.$s = t3.getSeconds(), this.$ms = t3.getMilliseconds();
+          }, m2.$utils = function() {
+            return O;
+          }, m2.isValid = function() {
+            return !(this.$d.toString() === $);
+          }, m2.isSame = function(t3, e3) {
+            var n2 = w(t3);
+            return this.startOf(e3) <= n2 && n2 <= this.endOf(e3);
+          }, m2.isAfter = function(t3, e3) {
+            return w(t3) < this.startOf(e3);
+          }, m2.isBefore = function(t3, e3) {
+            return this.endOf(e3) < w(t3);
+          }, m2.$g = function(t3, e3, n2) {
+            return O.u(t3) ? this[e3] : this.set(n2, t3);
+          }, m2.unix = function() {
+            return Math.floor(this.valueOf() / 1e3);
+          }, m2.valueOf = function() {
+            return this.$d.getTime();
+          }, m2.startOf = function(t3, e3) {
+            var n2 = this, r2 = !!O.u(e3) || e3, h2 = O.p(t3), $2 = function(t4, e4) {
+              var i3 = O.w(n2.$u ? Date.UTC(n2.$y, e4, t4) : new Date(n2.$y, e4, t4), n2);
+              return r2 ? i3 : i3.endOf(a);
+            }, l3 = function(t4, e4) {
+              return O.w(n2.toDate()[t4].apply(n2.toDate("s"), (r2 ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(e4)), n2);
+            }, y2 = this.$W, M3 = this.$M, m3 = this.$D, g2 = "set" + (this.$u ? "UTC" : "");
+            switch (h2) {
+              case c:
+                return r2 ? $2(1, 0) : $2(31, 11);
+              case f:
+                return r2 ? $2(1, M3) : $2(0, M3 + 1);
+              case o:
+                var v3 = this.$locale().weekStart || 0, D2 = (y2 < v3 ? y2 + 7 : y2) - v3;
+                return $2(r2 ? m3 - D2 : m3 + (6 - D2), M3);
+              case a:
+              case d:
+                return l3(g2 + "Hours", 0);
+              case u:
+                return l3(g2 + "Minutes", 1);
+              case s:
+                return l3(g2 + "Seconds", 2);
+              case i2:
+                return l3(g2 + "Milliseconds", 3);
+              default:
+                return this.clone();
+            }
+          }, m2.endOf = function(t3) {
+            return this.startOf(t3, false);
+          }, m2.$set = function(t3, e3) {
+            var n2, o2 = O.p(t3), h2 = "set" + (this.$u ? "UTC" : ""), $2 = (n2 = {}, n2[a] = h2 + "Date", n2[d] = h2 + "Date", n2[f] = h2 + "Month", n2[c] = h2 + "FullYear", n2[u] = h2 + "Hours", n2[s] = h2 + "Minutes", n2[i2] = h2 + "Seconds", n2[r] = h2 + "Milliseconds", n2)[o2], l3 = o2 === a ? this.$D + (e3 - this.$W) : e3;
+            if (o2 === f || o2 === c) {
+              var y2 = this.clone().set(d, 1);
+              y2.$d[$2](l3), y2.init(), this.$d = y2.set(d, Math.min(this.$D, y2.daysInMonth())).$d;
+            } else
+              $2 && this.$d[$2](l3);
+            return this.init(), this;
+          }, m2.set = function(t3, e3) {
+            return this.clone().$set(t3, e3);
+          }, m2.get = function(t3) {
+            return this[O.p(t3)]();
+          }, m2.add = function(r2, h2) {
+            var d2, $2 = this;
+            r2 = Number(r2);
+            var l3 = O.p(h2), y2 = function(t3) {
+              var e3 = w($2);
+              return O.w(e3.date(e3.date() + Math.round(t3 * r2)), $2);
+            };
+            if (l3 === f)
+              return this.set(f, this.$M + r2);
+            if (l3 === c)
+              return this.set(c, this.$y + r2);
+            if (l3 === a)
+              return y2(1);
+            if (l3 === o)
+              return y2(7);
+            var M3 = (d2 = {}, d2[s] = e2, d2[u] = n, d2[i2] = t2, d2)[l3] || 1, m3 = this.$d.getTime() + r2 * M3;
+            return O.w(m3, this);
+          }, m2.subtract = function(t3, e3) {
+            return this.add(-1 * t3, e3);
+          }, m2.format = function(t3) {
+            var e3 = this, n2 = this.$locale();
+            if (!this.isValid())
+              return n2.invalidDate || $;
+            var r2 = t3 || "YYYY-MM-DDTHH:mm:ssZ", i3 = O.z(this), s2 = this.$H, u2 = this.$m, a2 = this.$M, o2 = n2.weekdays, f2 = n2.months, h2 = function(t4, n3, i4, s3) {
+              return t4 && (t4[n3] || t4(e3, r2)) || i4[n3].slice(0, s3);
+            }, c2 = function(t4) {
+              return O.s(s2 % 12 || 12, t4, "0");
+            }, d2 = n2.meridiem || function(t4, e4, n3) {
+              var r3 = t4 < 12 ? "AM" : "PM";
+              return n3 ? r3.toLowerCase() : r3;
+            }, l3 = { YY: String(this.$y).slice(-2), YYYY: this.$y, M: a2 + 1, MM: O.s(a2 + 1, 2, "0"), MMM: h2(n2.monthsShort, a2, f2, 3), MMMM: h2(f2, a2), D: this.$D, DD: O.s(this.$D, 2, "0"), d: String(this.$W), dd: h2(n2.weekdaysMin, this.$W, o2, 2), ddd: h2(n2.weekdaysShort, this.$W, o2, 3), dddd: o2[this.$W], H: String(s2), HH: O.s(s2, 2, "0"), h: c2(1), hh: c2(2), a: d2(s2, u2, true), A: d2(s2, u2, false), m: String(u2), mm: O.s(u2, 2, "0"), s: String(this.$s), ss: O.s(this.$s, 2, "0"), SSS: O.s(this.$ms, 3, "0"), Z: i3 };
+            return r2.replace(y, function(t4, e4) {
+              return e4 || l3[t4] || i3.replace(":", "");
+            });
+          }, m2.utcOffset = function() {
+            return 15 * -Math.round(this.$d.getTimezoneOffset() / 15);
+          }, m2.diff = function(r2, d2, $2) {
+            var l3, y2 = O.p(d2), M3 = w(r2), m3 = (M3.utcOffset() - this.utcOffset()) * e2, g2 = this - M3, v3 = O.m(this, M3);
+            return v3 = (l3 = {}, l3[c] = v3 / 12, l3[f] = v3, l3[h] = v3 / 3, l3[o] = (g2 - m3) / 6048e5, l3[a] = (g2 - m3) / 864e5, l3[u] = g2 / n, l3[s] = g2 / e2, l3[i2] = g2 / t2, l3)[y2] || g2, $2 ? v3 : O.a(v3);
+          }, m2.daysInMonth = function() {
+            return this.endOf(f).$D;
+          }, m2.$locale = function() {
+            return D[this.$L];
+          }, m2.locale = function(t3, e3) {
+            if (!t3)
+              return this.$L;
+            var n2 = this.clone(), r2 = S(t3, e3, true);
+            return r2 && (n2.$L = r2), n2;
+          }, m2.clone = function() {
+            return O.w(this.$d, this);
+          }, m2.toDate = function() {
+            return new Date(this.valueOf());
+          }, m2.toJSON = function() {
+            return this.isValid() ? this.toISOString() : null;
+          }, m2.toISOString = function() {
+            return this.$d.toISOString();
+          }, m2.toString = function() {
+            return this.$d.toUTCString();
+          }, M2;
+        }(), T = _.prototype;
+        return w.prototype = T, [["$ms", r], ["$s", i2], ["$m", s], ["$H", u], ["$W", a], ["$M", f], ["$y", c], ["$D", d]].forEach(function(t3) {
+          T[t3[1]] = function(e3) {
+            return this.$g(e3, t3[0], t3[1]);
+          };
+        }), w.extend = function(t3, e3) {
+          return t3.$i || (t3(e3, _, w), t3.$i = true), w;
+        }, w.locale = S, w.isDayjs = p, w.unix = function(t3) {
+          return w(1e3 * t3);
+        }, w.en = D[v2], w.Ls = D, w.p = {}, w;
+      });
+    }
+  });
+
+  // node_modules/slugify/slugify.js
+  var require_slugify = __commonJS({
+    "node_modules/slugify/slugify.js"(exports, module) {
+      (function(name, root2, factory) {
+        if (typeof exports === "object") {
+          module.exports = factory();
+          module.exports["default"] = factory();
+        } else if (typeof define === "function" && define.amd) {
+          define(factory);
+        } else {
+          root2[name] = factory();
+        }
+      })("slugify", exports, function() {
+        var charMap = JSON.parse(`{"$":"dollar","%":"percent","&":"and","<":"less",">":"greater","|":"or","\xA2":"cent","\xA3":"pound","\xA4":"currency","\xA5":"yen","\xA9":"(c)","\xAA":"a","\xAE":"(r)","\xBA":"o","\xC0":"A","\xC1":"A","\xC2":"A","\xC3":"A","\xC4":"A","\xC5":"A","\xC6":"AE","\xC7":"C","\xC8":"E","\xC9":"E","\xCA":"E","\xCB":"E","\xCC":"I","\xCD":"I","\xCE":"I","\xCF":"I","\xD0":"D","\xD1":"N","\xD2":"O","\xD3":"O","\xD4":"O","\xD5":"O","\xD6":"O","\xD8":"O","\xD9":"U","\xDA":"U","\xDB":"U","\xDC":"U","\xDD":"Y","\xDE":"TH","\xDF":"ss","\xE0":"a","\xE1":"a","\xE2":"a","\xE3":"a","\xE4":"a","\xE5":"a","\xE6":"ae","\xE7":"c","\xE8":"e","\xE9":"e","\xEA":"e","\xEB":"e","\xEC":"i","\xED":"i","\xEE":"i","\xEF":"i","\xF0":"d","\xF1":"n","\xF2":"o","\xF3":"o","\xF4":"o","\xF5":"o","\xF6":"o","\xF8":"o","\xF9":"u","\xFA":"u","\xFB":"u","\xFC":"u","\xFD":"y","\xFE":"th","\xFF":"y","\u0100":"A","\u0101":"a","\u0102":"A","\u0103":"a","\u0104":"A","\u0105":"a","\u0106":"C","\u0107":"c","\u010C":"C","\u010D":"c","\u010E":"D","\u010F":"d","\u0110":"DJ","\u0111":"dj","\u0112":"E","\u0113":"e","\u0116":"E","\u0117":"e","\u0118":"e","\u0119":"e","\u011A":"E","\u011B":"e","\u011E":"G","\u011F":"g","\u0122":"G","\u0123":"g","\u0128":"I","\u0129":"i","\u012A":"i","\u012B":"i","\u012E":"I","\u012F":"i","\u0130":"I","\u0131":"i","\u0136":"k","\u0137":"k","\u013B":"L","\u013C":"l","\u013D":"L","\u013E":"l","\u0141":"L","\u0142":"l","\u0143":"N","\u0144":"n","\u0145":"N","\u0146":"n","\u0147":"N","\u0148":"n","\u014C":"O","\u014D":"o","\u0150":"O","\u0151":"o","\u0152":"OE","\u0153":"oe","\u0154":"R","\u0155":"r","\u0158":"R","\u0159":"r","\u015A":"S","\u015B":"s","\u015E":"S","\u015F":"s","\u0160":"S","\u0161":"s","\u0162":"T","\u0163":"t","\u0164":"T","\u0165":"t","\u0168":"U","\u0169":"u","\u016A":"u","\u016B":"u","\u016E":"U","\u016F":"u","\u0170":"U","\u0171":"u","\u0172":"U","\u0173":"u","\u0174":"W","\u0175":"w","\u0176":"Y","\u0177":"y","\u0178":"Y","\u0179":"Z","\u017A":"z","\u017B":"Z","\u017C":"z","\u017D":"Z","\u017E":"z","\u018F":"E","\u0192":"f","\u01A0":"O","\u01A1":"o","\u01AF":"U","\u01B0":"u","\u01C8":"LJ","\u01C9":"lj","\u01CB":"NJ","\u01CC":"nj","\u0218":"S","\u0219":"s","\u021A":"T","\u021B":"t","\u0259":"e","\u02DA":"o","\u0386":"A","\u0388":"E","\u0389":"H","\u038A":"I","\u038C":"O","\u038E":"Y","\u038F":"W","\u0390":"i","\u0391":"A","\u0392":"B","\u0393":"G","\u0394":"D","\u0395":"E","\u0396":"Z","\u0397":"H","\u0398":"8","\u0399":"I","\u039A":"K","\u039B":"L","\u039C":"M","\u039D":"N","\u039E":"3","\u039F":"O","\u03A0":"P","\u03A1":"R","\u03A3":"S","\u03A4":"T","\u03A5":"Y","\u03A6":"F","\u03A7":"X","\u03A8":"PS","\u03A9":"W","\u03AA":"I","\u03AB":"Y","\u03AC":"a","\u03AD":"e","\u03AE":"h","\u03AF":"i","\u03B0":"y","\u03B1":"a","\u03B2":"b","\u03B3":"g","\u03B4":"d","\u03B5":"e","\u03B6":"z","\u03B7":"h","\u03B8":"8","\u03B9":"i","\u03BA":"k","\u03BB":"l","\u03BC":"m","\u03BD":"n","\u03BE":"3","\u03BF":"o","\u03C0":"p","\u03C1":"r","\u03C2":"s","\u03C3":"s","\u03C4":"t","\u03C5":"y","\u03C6":"f","\u03C7":"x","\u03C8":"ps","\u03C9":"w","\u03CA":"i","\u03CB":"y","\u03CC":"o","\u03CD":"y","\u03CE":"w","\u0401":"Yo","\u0402":"DJ","\u0404":"Ye","\u0406":"I","\u0407":"Yi","\u0408":"J","\u0409":"LJ","\u040A":"NJ","\u040B":"C","\u040F":"DZ","\u0410":"A","\u0411":"B","\u0412":"V","\u0413":"G","\u0414":"D","\u0415":"E","\u0416":"Zh","\u0417":"Z","\u0418":"I","\u0419":"J","\u041A":"K","\u041B":"L","\u041C":"M","\u041D":"N","\u041E":"O","\u041F":"P","\u0420":"R","\u0421":"S","\u0422":"T","\u0423":"U","\u0424":"F","\u0425":"H","\u0426":"C","\u0427":"Ch","\u0428":"Sh","\u0429":"Sh","\u042A":"U","\u042B":"Y","\u042C":"","\u042D":"E","\u042E":"Yu","\u042F":"Ya","\u0430":"a","\u0431":"b","\u0432":"v","\u0433":"g","\u0434":"d","\u0435":"e","\u0436":"zh","\u0437":"z","\u0438":"i","\u0439":"j","\u043A":"k","\u043B":"l","\u043C":"m","\u043D":"n","\u043E":"o","\u043F":"p","\u0440":"r","\u0441":"s","\u0442":"t","\u0443":"u","\u0444":"f","\u0445":"h","\u0446":"c","\u0447":"ch","\u0448":"sh","\u0449":"sh","\u044A":"u","\u044B":"y","\u044C":"","\u044D":"e","\u044E":"yu","\u044F":"ya","\u0451":"yo","\u0452":"dj","\u0454":"ye","\u0456":"i","\u0457":"yi","\u0458":"j","\u0459":"lj","\u045A":"nj","\u045B":"c","\u045D":"u","\u045F":"dz","\u0490":"G","\u0491":"g","\u0492":"GH","\u0493":"gh","\u049A":"KH","\u049B":"kh","\u04A2":"NG","\u04A3":"ng","\u04AE":"UE","\u04AF":"ue","\u04B0":"U","\u04B1":"u","\u04BA":"H","\u04BB":"h","\u04D8":"AE","\u04D9":"ae","\u04E8":"OE","\u04E9":"oe","\u0531":"A","\u0532":"B","\u0533":"G","\u0534":"D","\u0535":"E","\u0536":"Z","\u0537":"E'","\u0538":"Y'","\u0539":"T'","\u053A":"JH","\u053B":"I","\u053C":"L","\u053D":"X","\u053E":"C'","\u053F":"K","\u0540":"H","\u0541":"D'","\u0542":"GH","\u0543":"TW","\u0544":"M","\u0545":"Y","\u0546":"N","\u0547":"SH","\u0549":"CH","\u054A":"P","\u054B":"J","\u054C":"R'","\u054D":"S","\u054E":"V","\u054F":"T","\u0550":"R","\u0551":"C","\u0553":"P'","\u0554":"Q'","\u0555":"O''","\u0556":"F","\u0587":"EV","\u0621":"a","\u0622":"aa","\u0623":"a","\u0624":"u","\u0625":"i","\u0626":"e","\u0627":"a","\u0628":"b","\u0629":"h","\u062A":"t","\u062B":"th","\u062C":"j","\u062D":"h","\u062E":"kh","\u062F":"d","\u0630":"th","\u0631":"r","\u0632":"z","\u0633":"s","\u0634":"sh","\u0635":"s","\u0636":"dh","\u0637":"t","\u0638":"z","\u0639":"a","\u063A":"gh","\u0641":"f","\u0642":"q","\u0643":"k","\u0644":"l","\u0645":"m","\u0646":"n","\u0647":"h","\u0648":"w","\u0649":"a","\u064A":"y","\u064B":"an","\u064C":"on","\u064D":"en","\u064E":"a","\u064F":"u","\u0650":"e","\u0652":"","\u0660":"0","\u0661":"1","\u0662":"2","\u0663":"3","\u0664":"4","\u0665":"5","\u0666":"6","\u0667":"7","\u0668":"8","\u0669":"9","\u067E":"p","\u0686":"ch","\u0698":"zh","\u06A9":"k","\u06AF":"g","\u06CC":"y","\u06F0":"0","\u06F1":"1","\u06F2":"2","\u06F3":"3","\u06F4":"4","\u06F5":"5","\u06F6":"6","\u06F7":"7","\u06F8":"8","\u06F9":"9","\u0E3F":"baht","\u10D0":"a","\u10D1":"b","\u10D2":"g","\u10D3":"d","\u10D4":"e","\u10D5":"v","\u10D6":"z","\u10D7":"t","\u10D8":"i","\u10D9":"k","\u10DA":"l","\u10DB":"m","\u10DC":"n","\u10DD":"o","\u10DE":"p","\u10DF":"zh","\u10E0":"r","\u10E1":"s","\u10E2":"t","\u10E3":"u","\u10E4":"f","\u10E5":"k","\u10E6":"gh","\u10E7":"q","\u10E8":"sh","\u10E9":"ch","\u10EA":"ts","\u10EB":"dz","\u10EC":"ts","\u10ED":"ch","\u10EE":"kh","\u10EF":"j","\u10F0":"h","\u1E62":"S","\u1E63":"s","\u1E80":"W","\u1E81":"w","\u1E82":"W","\u1E83":"w","\u1E84":"W","\u1E85":"w","\u1E9E":"SS","\u1EA0":"A","\u1EA1":"a","\u1EA2":"A","\u1EA3":"a","\u1EA4":"A","\u1EA5":"a","\u1EA6":"A","\u1EA7":"a","\u1EA8":"A","\u1EA9":"a","\u1EAA":"A","\u1EAB":"a","\u1EAC":"A","\u1EAD":"a","\u1EAE":"A","\u1EAF":"a","\u1EB0":"A","\u1EB1":"a","\u1EB2":"A","\u1EB3":"a","\u1EB4":"A","\u1EB5":"a","\u1EB6":"A","\u1EB7":"a","\u1EB8":"E","\u1EB9":"e","\u1EBA":"E","\u1EBB":"e","\u1EBC":"E","\u1EBD":"e","\u1EBE":"E","\u1EBF":"e","\u1EC0":"E","\u1EC1":"e","\u1EC2":"E","\u1EC3":"e","\u1EC4":"E","\u1EC5":"e","\u1EC6":"E","\u1EC7":"e","\u1EC8":"I","\u1EC9":"i","\u1ECA":"I","\u1ECB":"i","\u1ECC":"O","\u1ECD":"o","\u1ECE":"O","\u1ECF":"o","\u1ED0":"O","\u1ED1":"o","\u1ED2":"O","\u1ED3":"o","\u1ED4":"O","\u1ED5":"o","\u1ED6":"O","\u1ED7":"o","\u1ED8":"O","\u1ED9":"o","\u1EDA":"O","\u1EDB":"o","\u1EDC":"O","\u1EDD":"o","\u1EDE":"O","\u1EDF":"o","\u1EE0":"O","\u1EE1":"o","\u1EE2":"O","\u1EE3":"o","\u1EE4":"U","\u1EE5":"u","\u1EE6":"U","\u1EE7":"u","\u1EE8":"U","\u1EE9":"u","\u1EEA":"U","\u1EEB":"u","\u1EEC":"U","\u1EED":"u","\u1EEE":"U","\u1EEF":"u","\u1EF0":"U","\u1EF1":"u","\u1EF2":"Y","\u1EF3":"y","\u1EF4":"Y","\u1EF5":"y","\u1EF6":"Y","\u1EF7":"y","\u1EF8":"Y","\u1EF9":"y","\u2013":"-","\u2018":"'","\u2019":"'","\u201C":"\\"","\u201D":"\\"","\u201E":"\\"","\u2020":"+","\u2022":"*","\u2026":"...","\u20A0":"ecu","\u20A2":"cruzeiro","\u20A3":"french franc","\u20A4":"lira","\u20A5":"mill","\u20A6":"naira","\u20A7":"peseta","\u20A8":"rupee","\u20A9":"won","\u20AA":"new shequel","\u20AB":"dong","\u20AC":"euro","\u20AD":"kip","\u20AE":"tugrik","\u20AF":"drachma","\u20B0":"penny","\u20B1":"peso","\u20B2":"guarani","\u20B3":"austral","\u20B4":"hryvnia","\u20B5":"cedi","\u20B8":"kazakhstani tenge","\u20B9":"indian rupee","\u20BA":"turkish lira","\u20BD":"russian ruble","\u20BF":"bitcoin","\u2120":"sm","\u2122":"tm","\u2202":"d","\u2206":"delta","\u2211":"sum","\u221E":"infinity","\u2665":"love","\u5143":"yuan","\u5186":"yen","\uFDFC":"rial","\uFEF5":"laa","\uFEF7":"laa","\uFEF9":"lai","\uFEFB":"la"}`);
+        var locales = JSON.parse('{"bg":{"\u0419":"Y","\u0426":"Ts","\u0429":"Sht","\u042A":"A","\u042C":"Y","\u0439":"y","\u0446":"ts","\u0449":"sht","\u044A":"a","\u044C":"y"},"de":{"\xC4":"AE","\xE4":"ae","\xD6":"OE","\xF6":"oe","\xDC":"UE","\xFC":"ue","\xDF":"ss","%":"prozent","&":"und","|":"oder","\u2211":"summe","\u221E":"unendlich","\u2665":"liebe"},"es":{"%":"por ciento","&":"y","<":"menor que",">":"mayor que","|":"o","\xA2":"centavos","\xA3":"libras","\xA4":"moneda","\u20A3":"francos","\u2211":"suma","\u221E":"infinito","\u2665":"amor"},"fr":{"%":"pourcent","&":"et","<":"plus petit",">":"plus grand","|":"ou","\xA2":"centime","\xA3":"livre","\xA4":"devise","\u20A3":"franc","\u2211":"somme","\u221E":"infini","\u2665":"amour"},"pt":{"%":"porcento","&":"e","<":"menor",">":"maior","|":"ou","\xA2":"centavo","\u2211":"soma","\xA3":"libra","\u221E":"infinito","\u2665":"amor"},"uk":{"\u0418":"Y","\u0438":"y","\u0419":"Y","\u0439":"y","\u0426":"Ts","\u0446":"ts","\u0425":"Kh","\u0445":"kh","\u0429":"Shch","\u0449":"shch","\u0413":"H","\u0433":"h"},"vi":{"\u0110":"D","\u0111":"d"},"da":{"\xD8":"OE","\xF8":"oe","\xC5":"AA","\xE5":"aa","%":"procent","&":"og","|":"eller","$":"dollar","<":"mindre end",">":"st\xF8rre end"},"nb":{"&":"og","\xC5":"AA","\xC6":"AE","\xD8":"OE","\xE5":"aa","\xE6":"ae","\xF8":"oe"},"it":{"&":"e"},"nl":{"&":"en"},"sv":{"&":"och","\xC5":"AA","\xC4":"AE","\xD6":"OE","\xE5":"aa","\xE4":"ae","\xF6":"oe"}}');
+        function replace(string, options) {
+          if (typeof string !== "string") {
+            throw new Error("slugify: string argument expected");
+          }
+          options = typeof options === "string" ? { replacement: options } : options || {};
+          var locale = locales[options.locale] || {};
+          var replacement = options.replacement === void 0 ? "-" : options.replacement;
+          var trim = options.trim === void 0 ? true : options.trim;
+          var slug = string.normalize().split("").reduce(function(result, ch) {
+            var appendChar = locale[ch] || charMap[ch] || ch;
+            if (appendChar === replacement) {
+              appendChar = " ";
+            }
+            return result + appendChar.replace(options.remove || /[^\w\s$*_+~.()'"!\-:@]+/g, "");
+          }, "");
+          if (options.strict) {
+            slug = slug.replace(/[^A-Za-z0-9\s]/g, "");
+          }
+          if (trim) {
+            slug = slug.trim();
+          }
+          slug = slug.replace(/\s+/g, replacement);
+          if (options.lower) {
+            slug = slug.toLowerCase();
+          }
+          return slug;
+        }
+        replace.extend = function(customMap) {
+          Object.assign(charMap, customMap);
+        };
+        return replace;
+      });
+    }
+  });
+
   // src/App.tsx
-  var import_react5 = __toESM(require_react());
+  var import_react7 = __toESM(require_react());
   var import_client = __toESM(require_client());
 
   // node_modules/buflib/dist/index.es.js
@@ -24545,22 +24754,8 @@
     return import_react.default.createElement("div", { className: "bl-info-box bl-info-box--".concat(m) }, import_react.default.createElement("div", { className: "bl-info-box__wrapper" }, n && import_react.default.createElement("div", { className: "bl-info-box__header" }, !b && import_react.default.createElement("i", { className: "bl-info-box__icon bl-icon--".concat(m, " bl-icon--medium") }), import_react.default.createElement("div", { className: "bl-info-box__header-content" }, n)), i2 && import_react.default.createElement("div", { className: "bl-info-box__content" }, i2), r && import_react.default.createElement("div", { className: "bl-info-box__link" }, r)), (c == null ? void 0 : c.url) && import_react.default.createElement("img", { src: c.url, alt: c.ariaText, className: "bl-info-box__image" }));
   };
 
-  // src/useHooks/useApi.ts
+  // src/components/app-context/AppContext.tsx
   var import_react2 = __toESM(require_react());
-  var import_slugify = __toESM(require_slugify());
-
-  // src/constants/fetchStates.ts
-  var IDLE = "IDLE";
-  var PENDING = "PENDING";
-
-  // src/constants/systemNotificationTypes.ts
-  var WARNING = "WARNING";
-  var ERROR = "ERROR";
-
-  // src/helpers/logError.tsx
-  var logError = (err) => {
-    console.error(err);
-  };
 
   // src/helpers/createDebugger.ts
   var import_debug = __toESM(require_browser());
@@ -24568,21 +24763,190 @@
     return (0, import_debug.default)(key);
   };
 
+  // src/components/app-context/AppContext.tsx
+  var debug2 = createDebugger("src/components/app-context/AppContext.tsx");
+  var AppContext = (0, import_react2.createContext)();
+  var initialState = {
+    systemNotifications: []
+  };
+  var AppContextProvider = ({ children }) => {
+    const [state, setAppState] = (0, import_react2.useState)(initialState);
+    const stateString = JSON.stringify(state);
+    debug2("AppContextProvider", { state });
+    const store = (0, import_react2.useMemo)(() => [state, setAppState], [stateString]);
+    return /* @__PURE__ */ import_react2.default.createElement(AppContext.Provider, {
+      value: store
+    }, children);
+  };
+
+  // src/components/notifications/Notifications.tsx
+  var import_react4 = __toESM(require_react());
+
+  // src/constants/systemNotificationTypes.ts
+  var MESSAGE = "MESSAGE";
+  var WARNING = "WARNING";
+  var ERROR = "ERROR";
+
+  // src/helpers/uuidv4.ts
+  var uuidv4 = () => {
+    let d = new Date().getTime();
+    let d2 = typeof performance !== "undefined" && performance.now && performance.now() * 1e3 || 0;
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      let r = Math.random() * 16;
+      if (d > 0) {
+        r = (d + r) % 16 | 0;
+        d = Math.floor(d / 16);
+      } else {
+        r = (d2 + r) % 16 | 0;
+        d2 = Math.floor(d2 / 16);
+      }
+      return (c === "x" ? r : r & 7 | 8).toString(16);
+    });
+  };
+
+  // src/useHooks/useAppContext.ts
+  var import_react3 = __toESM(require_react());
+  var debug3 = createDebugger("src/useHooks/useAppContext.ts");
+  var useAppContext = () => {
+    const appContext = (0, import_react3.useContext)(AppContext);
+    debug3("useAppContext", { appContext });
+    return appContext;
+  };
+
+  // src/useHooks/useNotifications.ts
+  var debug4 = createDebugger("src/useHooks/useNotifications.ts");
+  var useNotifications = () => {
+    const appContext = useAppContext();
+    debug4("useNotifications", appContext);
+    const [{ systemNotifications }, setAppState] = appContext;
+    const addSystemNotification = ({ message, type = MESSAGE }) => {
+      setAppState((prev) => {
+        const value = prev.systemNotifications.concat({
+          id: uuidv4(),
+          type,
+          message,
+          datetimeISO: new Date().toISOString()
+        });
+        return {
+          ...prev,
+          systemNotifications: value
+        };
+      });
+    };
+    const addSystemMessage = (message) => addSystemNotification({
+      message
+    });
+    const addSystemWarning = (message) => addSystemNotification({
+      type: WARNING,
+      message
+    });
+    const addSystemError = (message) => addSystemNotification({
+      type: ERROR,
+      message
+    });
+    const removeSystemNotification = ({ id }) => {
+      setAppState((prev) => {
+        const value = prev.systemNotifications.filter(({ id: needle }) => needle !== id);
+        return {
+          ...prev,
+          systemNotifications: value
+        };
+      });
+    };
+    const clearSystemNotifications = () => {
+      setAppState((prev) => {
+        return {
+          ...prev,
+          systemNotifications: []
+        };
+      });
+    };
+    return {
+      systemNotifications,
+      addSystemNotification,
+      addSystemMessage,
+      addSystemWarning,
+      addSystemError,
+      removeSystemNotification,
+      clearSystemNotifications
+    };
+  };
+
+  // src/helpers/isoStrFormatters.tsx
+  var import_dayjs = __toESM(require_dayjs_min());
+  var isoStr2Time = (isoStr = "") => (0, import_dayjs.default)(isoStr).format("[kl.] HH:mm.").toLocaleString();
+
+  // src/components/notifications/Notifications.tsx
+  var bgColors = {
+    [MESSAGE]: "bl-bg-green-4",
+    [WARNING]: "bl-bg-tomato-4",
+    [ERROR]: "bl-bg-tomato-1"
+  };
+  var RemoveIcon = ({ onClick }) => /* @__PURE__ */ import_react4.default.createElement("span", {
+    className: "bl-p-a-1",
+    style: {
+      cursor: "pointer",
+      position: "absolute",
+      top: 0,
+      right: 0
+    },
+    onClick
+  }, "[X]");
+  var Notifications = () => {
+    const {
+      systemNotifications,
+      removeSystemNotification,
+      clearSystemNotifications
+    } = useNotifications();
+    const sortedNotifications = (0, import_react4.useMemo)(() => {
+      const sorted = systemNotifications;
+      sorted.sort((a, b) => {
+        if (a < b)
+          return 1;
+        if (a > b)
+          return -1;
+        return 0;
+      });
+      return sorted;
+    }, [systemNotifications]);
+    return systemNotifications.length ? /* @__PURE__ */ import_react4.default.createElement("div", {
+      className: "bl-bg-sand-4 bl-p-a-4",
+      style: { position: "relative" }
+    }, /* @__PURE__ */ import_react4.default.createElement(RemoveIcon, {
+      onClick: () => clearSystemNotifications()
+    }), sortedNotifications.map(({ message, type, datetimeISO, id }) => /* @__PURE__ */ import_react4.default.createElement("div", {
+      key: id,
+      className: `${bgColors[type]} bl-p-x-2 bl-p-y-1 bl-m-b-1`,
+      style: { position: "relative" }
+    }, isoStr2Time(datetimeISO), " [", type, "]: ", message, " ", /* @__PURE__ */ import_react4.default.createElement(RemoveIcon, {
+      onClick: () => removeSystemNotification({ id })
+    })))) : null;
+  };
+
+  // src/components/api-list/ApiList.tsx
+  var import_react6 = __toESM(require_react());
+
+  // src/constants/fetchStates.ts
+  var IDLE = "IDLE";
+  var PENDING = "PENDING";
+
   // src/useHooks/useApi.ts
-  var debug2 = createDebugger("src/useHooks/useApi.ts");
+  var import_react5 = __toESM(require_react());
+  var import_slugify = __toESM(require_slugify());
+  var debug5 = createDebugger("src/useHooks/useApi.ts");
   var hyphenToCamelCase = (str) => {
     return str.replace(/-([a-z])/g, function(g) {
       return g[1].toUpperCase();
     });
   };
-  var apiStore = IDLE;
+  var apiStore = null;
   var resultParsers = {
     default: async (response) => {
       const resolved = await response.json();
       return resolved;
     }
   };
-  var apiWrapper = ({ apiName, apiCall }) => {
+  var apiWrapper = ({ apiName, apiCall, addSystemNotification }) => {
     return async (...args) => {
       const signal = args.find((arg) => arg instanceof AbortSignal) || {};
       let response;
@@ -24590,11 +24954,9 @@
       try {
         response = await apiCall(...args);
         result = resultParsers[apiName] ? await resultParsers[apiName](response) : await resultParsers.default(response);
-        if (result.errors) {
-          result.meta.type = WARNING;
-        }
+        debug5("reponse", response);
       } catch (err) {
-        result = { meta: { success: false } };
+        result = { meta: { success: false, catchBlock: true } };
         result.errors = [];
         if (signal.aborted) {
           result.meta.type = WARNING;
@@ -24603,25 +24965,41 @@
           result.meta.type = ERROR;
           result.errors.push(err.toString());
         }
-        logError(err);
+      }
+      if (!result.meta) {
+        result.meta = {};
+      }
+      Object.assign(result.meta, {
+        url: response.url,
+        status: response.status
+      });
+      if (!response.ok || result.meta.type === ERROR) {
+        if (response.status >= 500) {
+          addSystemNotification({
+            message: "Something went wrong!",
+            type: ERROR
+          });
+        }
       }
       return result;
     };
   };
-  var fetchApis = async () => {
+  var fetchApis = async (addSystemNotification) => {
     const getApis = apiWrapper({
       apiName: "initApis",
-      apiCall: () => fetch("/api")
+      apiCall: () => fetch("/api"),
+      addSystemNotification
     });
     const { data: routes } = await getApis();
     return routes.reduce((acc, { path, methods }) => {
-      debug2("fetchApis", path);
+      debug5("fetchApis", path);
       if (path !== "/") {
         Object.keys(methods).forEach((method) => {
           const apiName = hyphenToCamelCase([method, (0, import_slugify.default)(path)].join("-"));
           acc[apiName] = apiWrapper({
             apiName,
-            apiCall: () => fetch(`/api${path}`, { method })
+            apiCall: () => fetch(`/api${path}`, { method }),
+            addSystemNotification
           });
         });
       }
@@ -24629,43 +25007,27 @@
     }, {});
   };
   var useApi = () => {
-    const [apis, setApis] = (0, import_react2.useState)({});
-    (0, import_react2.useEffect)(() => {
-      if (apiStore === IDLE) {
-        apiStore === PENDING;
-        fetchApis().then((apis2) => {
-          apiStore = apis2;
-          setApis(apiStore);
+    const { addSystemNotification } = useNotifications();
+    const [apis, setApis] = (0, import_react5.useState)(apiStore || {});
+    (0, import_react5.useEffect)(() => {
+      if (!apiStore) {
+        fetchApis(addSystemNotification).then((wrappedApis) => {
+          apiStore = wrappedApis;
+          setApis(wrappedApis);
         });
       }
     }, []);
+    debug5("useApi", { apis, apiStore });
     return apis;
   };
 
-  // src/components/app-context/AppContext.tsx
-  var import_react3 = __toESM(require_react());
-  var debug3 = createDebugger("src/components/app-context/AppContext.tsx");
-  var AppContext = (0, import_react3.createContext)();
-  var initialState = {
-    systemNotifications: []
-  };
-  var AppContextProvider = ({ children }) => {
-    const [state, setAppState] = (0, import_react3.useState)(initialState);
-    const stateString = JSON.stringify(state);
-    debug3("AppContextProvider", { state });
-    const store = (0, import_react3.useMemo)(() => [state, setAppState], [stateString]);
-    return /* @__PURE__ */ import_react3.default.createElement(AppContext.Provider, {
-      value: store
-    }, children);
-  };
-
   // src/components/api-list/ApiList.tsx
-  var import_react4 = __toESM(require_react());
-  var debug4 = createDebugger("src/components/api-list/ApiList.tsx");
+  var debug6 = createDebugger("src/components/api-list/ApiList.tsx");
   var OPEN = true;
-  var ApiList = ({ apis }) => {
-    const [results, setResults] = (0, import_react4.useState)({});
-    const [states, setStates] = (0, import_react4.useState)({});
+  var ApiList = () => {
+    const apis = useApi();
+    const [results, setResults] = (0, import_react6.useState)({});
+    const [states, setStates] = (0, import_react6.useState)({});
     async function makeCall(name, call) {
       setStates((prev) => ({
         ...prev,
@@ -24681,17 +25043,17 @@
         [name]: OPEN
       }));
     }
-    (0, import_react4.useEffect)(() => {
+    (0, import_react6.useEffect)(() => {
       setStates(Object.keys(apis).reduce((acc, name) => ({
         ...acc,
         [name]: IDLE
       }), {}));
     }, [apis]);
-    debug4("render", { states, results });
-    return /* @__PURE__ */ import_react4.default.createElement("div", null, Object.entries(apis).map(([name, call]) => /* @__PURE__ */ import_react4.default.createElement("div", {
+    debug6("render", { apis, states, results });
+    return /* @__PURE__ */ import_react6.default.createElement("div", null, Object.entries(apis).map(([name, call]) => /* @__PURE__ */ import_react6.default.createElement("div", {
       key: name,
       className: "bl-p-y-2"
-    }, /* @__PURE__ */ import_react4.default.createElement("button", {
+    }, /* @__PURE__ */ import_react6.default.createElement("button", {
       disabled: states[name] === PENDING,
       className: "bl-button bl-button--primary bl-button--fluid",
       onClick: () => {
@@ -24704,32 +25066,28 @@
           }));
         }
       }
-    }, name), /* @__PURE__ */ import_react4.default.createElement("div", {
+    }, name), /* @__PURE__ */ import_react6.default.createElement("div", {
       className: "bl-bg-ocre-4 bl-p-a-4",
       style: { display: states[name] === OPEN ? "block" : "none" }
-    }, results[name] && /* @__PURE__ */ import_react4.default.createElement("pre", null, JSON.stringify(results[name], null, 2))))));
+    }, results[name] && /* @__PURE__ */ import_react6.default.createElement("pre", null, JSON.stringify(results[name], null, 2))))));
   };
 
   // src/App.tsx
-  var debug5 = createDebugger("src/App.tsx");
+  var debug7 = createDebugger("src/App.tsx");
   var App = () => {
-    const apis = useApi();
-    debug5("render", { apis });
-    return /* @__PURE__ */ import_react5.default.createElement("div", {
+    return /* @__PURE__ */ import_react7.default.createElement(AppContextProvider, null, /* @__PURE__ */ import_react7.default.createElement("div", {
       className: "bl-container bl-container--small"
-    }, /* @__PURE__ */ import_react5.default.createElement(AppContextProvider, null, /* @__PURE__ */ import_react5.default.createElement("div", {
+    }, /* @__PURE__ */ import_react7.default.createElement(Notifications, null), /* @__PURE__ */ import_react7.default.createElement("div", {
       className: "bl-grid bl-grid--two-columns-mobile"
-    }, /* @__PURE__ */ import_react5.default.createElement(v, {
+    }, /* @__PURE__ */ import_react7.default.createElement(v, {
       header: "JSON API"
-    }, /* @__PURE__ */ import_react5.default.createElement("p", null, "Truly generic problems -- i.e., conditions that could potentially apply to any resource on the Web -- are usually better expressed as plain status codes.")), /* @__PURE__ */ import_react5.default.createElement(v, {
+    }, /* @__PURE__ */ import_react7.default.createElement("p", null, "Truly generic problems -- i.e., conditions that could potentially apply to any resource on the Web -- are usually better expressed as plain status codes.")), /* @__PURE__ */ import_react7.default.createElement(v, {
       header: "ProblemDetails"
-    }, /* @__PURE__ */ import_react5.default.createElement("p", null, 'For example, a "write access disallowed" problem is probably unnecessary, since a 403 Forbidden status code in response to a PUT request is self-explanatory.'))), /* @__PURE__ */ import_react5.default.createElement(ApiList, {
-      apis
-    })));
+    }, /* @__PURE__ */ import_react7.default.createElement("p", null, 'For example, a "write access disallowed" problem is probably unnecessary, since a 403 Forbidden status code in response to a PUT request is self-explanatory.'))), /* @__PURE__ */ import_react7.default.createElement(ApiList, null)));
   };
   var container = document.getElementById("app");
   var root = (0, import_client.createRoot)(container);
-  root.render(/* @__PURE__ */ import_react5.default.createElement(App, null));
+  root.render(/* @__PURE__ */ import_react7.default.createElement(App, null));
 })();
 /*
 object-assign

@@ -1,18 +1,11 @@
 import React, { createContext, useState, useMemo, ReactNode } from 'react';
 
-import { IDLE } from '../../constants/fetchStates';
-
 import { createDebugger } from '../../helpers/createDebugger';
 
 const debug = createDebugger(__filename);
 
 // create context
 const AppContext = createContext();
-
-const createFetchState = (value) => ({
-  value,
-  fetchState: IDLE,
-});
 
 const initialState = {
   systemNotifications: [],

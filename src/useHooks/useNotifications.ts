@@ -4,8 +4,15 @@ import { uuidv4 } from '../helpers/uuidv4';
 
 import { useAppContext } from './useAppContext';
 
+import { createDebugger } from '../helpers/createDebugger';
+
+const debug = createDebugger(__filename);
+
 const useNotifications = () => {
-  const [{ systemNotifications }, setAppState] = useAppContext();
+  const appContext = useAppContext();
+  debug('useNotifications', appContext);
+
+  const [{ systemNotifications }, setAppState] = appContext;
 
   const addSystemNotification = ({ message, type = MESSAGE }) => {
     setAppState((prev) => {
