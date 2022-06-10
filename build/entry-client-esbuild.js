@@ -26304,7 +26304,7 @@
     [ERROR]: "bl-bg-tomato-1"
   };
   var RemoveIcon = ({ onClick }) => /* @__PURE__ */ import_react4.default.createElement("span", {
-    className: "bl-p-a-1",
+    className: "bl-p-a-1 bl-p-r-4",
     style: {
       cursor: "pointer",
       position: "absolute",
@@ -26331,8 +26331,17 @@
       return sorted;
     }, [systemNotifications]);
     return systemNotifications.length ? /* @__PURE__ */ import_react4.default.createElement("div", {
-      className: "bl-bg-sand-4 bl-p-a-4",
-      style: { position: "relative" }
+      className: "bl-text-center",
+      style: {
+        position: "fixed",
+        top: "0",
+        left: "0",
+        width: "100vw",
+        boxSizing: "border-box",
+        zIndex: "999"
+      }
+    }, /* @__PURE__ */ import_react4.default.createElement("div", {
+      className: "bl-bg-sand-4 bl-p-a-4 "
     }, /* @__PURE__ */ import_react4.default.createElement(RemoveIcon, {
       onClick: () => clearSystemNotifications()
     }), sortedNotifications.map(({ message, type, datetimeISO, id }) => /* @__PURE__ */ import_react4.default.createElement("div", {
@@ -26341,7 +26350,7 @@
       style: { position: "relative" }
     }, isoStr2Time(datetimeISO), " [", type, "]: ", message, " ", /* @__PURE__ */ import_react4.default.createElement(RemoveIcon, {
       onClick: () => removeSystemNotification({ id })
-    })))) : null;
+    }))))) : null;
   };
 
   // src/components/api-list/ApiList.tsx
@@ -26385,7 +26394,7 @@
         } else {
           result.meta.type = ERROR;
           result.title = "Client side parsing error";
-          result.details(err.toString());
+          result.details = err.toString();
         }
       }
       if (!result.meta) {
@@ -26503,9 +26512,9 @@
   var import_feather_icons = __toESM(require_feather());
   var debug7 = createDebugger("src/App.tsx");
   var App = () => {
-    return /* @__PURE__ */ import_react7.default.createElement(AppContextProvider, null, /* @__PURE__ */ import_react7.default.createElement("div", {
+    return /* @__PURE__ */ import_react7.default.createElement(AppContextProvider, null, /* @__PURE__ */ import_react7.default.createElement(Notifications, null), /* @__PURE__ */ import_react7.default.createElement("div", {
       className: "bl-container bl-container--small"
-    }, /* @__PURE__ */ import_react7.default.createElement(Notifications, null), /* @__PURE__ */ import_react7.default.createElement("div", {
+    }, /* @__PURE__ */ import_react7.default.createElement("div", {
       className: "bl-grid bl-grid--two-columns-mobile"
     }, /* @__PURE__ */ import_react7.default.createElement(v, {
       header: "JSON API"

@@ -89,7 +89,36 @@ api.get('/fields-invalid', (req, res) => {
 
 // 403
 
+api.get('/forbidden-empty', (req, res) => {
+  res.status(403).json(error(req, 'forbidden'));
+});
+
+api.get('/forbidden-data', (req, res) => {
+  res.status(403).json(
+    error(req, 'is-not-authenticated', {
+      title: 'User not authenticated',
+      data: {
+        isUserAuthenticated: false,
+      },
+    }),
+  );
+});
+
 // 404
+
+api.get('/not-found-empty', (req, res) => {
+  res.status(404).json(error(req, 'not-found'));
+});
+
+api.get('/not-found-data', (req, res) => {
+  res.status(404).json(
+    error(req, 'resource-not-found', {
+      data: {
+        agreements: [],
+      },
+    }),
+  );
+});
 
 api.get('/fields-conflict', (req, res) => {
   res.status(409).json(
@@ -119,6 +148,12 @@ api.get('/division-by-zero', (req, res) => {
       detail: 'Could not divide surplus',
     }),
   );
+});
+
+// Non-json
+
+api.get('/non-json-result', (req, res) => {
+  res.send('Hello world!');
 });
 
 // Extract routes

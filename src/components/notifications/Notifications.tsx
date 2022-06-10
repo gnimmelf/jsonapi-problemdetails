@@ -18,7 +18,7 @@ const bgColors = {
 
 const RemoveIcon = ({ onClick }) => (
   <span
-    className="bl-p-a-1"
+    className="bl-p-a-1 bl-p-r-4"
     style={{
       cursor: 'pointer',
       position: 'absolute',
@@ -49,18 +49,30 @@ const Notifications: FC = () => {
   }, [systemNotifications]);
 
   return systemNotifications.length ? (
-    <div className="bl-bg-sand-4 bl-p-a-4" style={{ position: 'relative' }}>
-      <RemoveIcon onClick={() => clearSystemNotifications()} />
-      {sortedNotifications.map(({ message, type, datetimeISO, id }) => (
-        <div
-          key={id}
-          className={`${bgColors[type]} bl-p-x-2 bl-p-y-1 bl-m-b-1`}
-          style={{ position: 'relative' }}
-        >
-          {isoStr2Time(datetimeISO)} [{type}]: {message}{' '}
-          <RemoveIcon onClick={() => removeSystemNotification({ id })} />
-        </div>
-      ))}
+    <div
+      className="bl-text-center"
+      style={{
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100vw',
+        boxSizing: 'border-box',
+        zIndex: '999',
+      }}
+    >
+      <div className="bl-bg-sand-4 bl-p-a-4 ">
+        <RemoveIcon onClick={() => clearSystemNotifications()} />
+        {sortedNotifications.map(({ message, type, datetimeISO, id }) => (
+          <div
+            key={id}
+            className={`${bgColors[type]} bl-p-x-2 bl-p-y-1 bl-m-b-1`}
+            style={{ position: 'relative' }}
+          >
+            {isoStr2Time(datetimeISO)} [{type}]: {message}{' '}
+            <RemoveIcon onClick={() => removeSystemNotification({ id })} />
+          </div>
+        ))}
+      </div>
     </div>
   ) : null;
 };

@@ -49,7 +49,7 @@ const apiWrapper = ({ apiName, apiCall, addSystemNotification }) => {
       } else {
         result.meta.type = ERROR;
         result.title = 'Client side parsing error';
-        result.details(err.toString());
+        result.details = err.toString();
       }
     }
 

@@ -17,8 +17,8 @@ const debug = createDebugger(__filename);
 const App = (): FC => {
   return (
     <AppContextProvider>
+      <Notifications />
       <div className="bl-container bl-container--small">
-        <Notifications />
         <div className="bl-grid bl-grid--two-columns-mobile">
           <BlInfoBox header="JSON API">
             <p>
