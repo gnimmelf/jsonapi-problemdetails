@@ -26377,14 +26377,15 @@
         result = resultParsers[apiName] ? await resultParsers[apiName](response) : await resultParsers.default(response);
         debug5("fetchParsed", { response, result });
       } catch (err) {
-        result = { meta: { success: false, catchBlock: true } };
-        result.errors = [];
+        result = { meta: { catchBlockError: true } };
         if (signal.aborted) {
           result.meta.type = WARNING;
-          result.errors.push(`Request cancelled (${apiName})`);
+          result.title = "Request was cancelled";
+          result.details = `Request for (${apiName}) was aborted by signal`;
         } else {
           result.meta.type = ERROR;
-          result.errors.push(err.toString());
+          result.title = "Client side parsing error";
+          result.details(err.toString());
         }
       }
       if (!result.meta) {
@@ -26392,15 +26393,14 @@
       }
       Object.assign(result.meta, {
         url: response.url,
-        status: response.status
+        status: response.status,
+        success: response.status === 200
       });
-      if (!response.ok || result.meta.type === ERROR) {
-        if (response.status >= 500) {
-          addSystemNotification({
-            message: "Something went wrong!",
-            type: ERROR
-          });
-        }
+      if (response.status >= 500 || result.meta.type === ERROR) {
+        addSystemNotification({
+          message: "Something went wrong!",
+          type: ERROR
+        });
       }
       return result;
     };
