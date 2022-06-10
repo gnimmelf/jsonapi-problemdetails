@@ -24363,10 +24363,10 @@
         return exports.colors[Math.abs(hash) % exports.colors.length];
       }
       function createDebug(namespace) {
-        function debug5() {
-          if (!debug5.enabled)
+        function debug6() {
+          if (!debug6.enabled)
             return;
-          var self = debug5;
+          var self = debug6;
           var curr = +new Date();
           var ms = curr - (prevTime || curr);
           self.diff = ms;
@@ -24396,17 +24396,17 @@
             return match;
           });
           exports.formatArgs.call(self, args);
-          var logFn = debug5.log || exports.log || console.log.bind(console);
+          var logFn = debug6.log || exports.log || console.log.bind(console);
           logFn.apply(self, args);
         }
-        debug5.namespace = namespace;
-        debug5.enabled = exports.enabled(namespace);
-        debug5.useColors = exports.useColors();
-        debug5.color = selectColor(namespace);
+        debug6.namespace = namespace;
+        debug6.enabled = exports.enabled(namespace);
+        debug6.useColors = exports.useColors();
+        debug6.color = selectColor(namespace);
         if (typeof exports.init === "function") {
-          exports.init(debug5);
+          exports.init(debug6);
         }
-        return debug5;
+        return debug6;
       }
       function enable(namespaces) {
         exports.save(namespaces);
@@ -24661,31 +24661,60 @@
 
   // src/components/api-list/ApiList.tsx
   var import_react4 = __toESM(require_react());
+  var debug4 = createDebugger("src/components/api-list/ApiList.tsx");
+  var OPEN = true;
   var ApiList = ({ apis }) => {
     const [results, setResults] = (0, import_react4.useState)({});
+    const [states, setStates] = (0, import_react4.useState)({});
     async function makeCall(name, call) {
+      setStates((prev) => ({
+        ...prev,
+        [name]: PENDING
+      }));
       const result = await call();
       setResults((prev) => ({
         ...prev,
         [name]: result
       }));
+      setStates((prev) => ({
+        ...prev,
+        [name]: OPEN
+      }));
     }
+    (0, import_react4.useEffect)(() => {
+      setStates(Object.keys(apis).reduce((acc, name) => ({
+        ...acc,
+        [name]: IDLE
+      }), {}));
+    }, [apis]);
+    debug4("render", { states, results });
     return /* @__PURE__ */ import_react4.default.createElement("div", null, Object.entries(apis).map(([name, call]) => /* @__PURE__ */ import_react4.default.createElement("div", {
       key: name,
       className: "bl-p-y-2"
     }, /* @__PURE__ */ import_react4.default.createElement("button", {
+      disabled: states[name] === PENDING,
       className: "bl-button bl-button--primary bl-button--fluid",
-      onClick: () => makeCall(name, call)
-    }, name), results[name] ? /* @__PURE__ */ import_react4.default.createElement("pre", {
-      className: "bl-bg-ocre-4 bl-p-a-4"
-    }, JSON.stringify(results[name], null, 2)) : null)));
+      onClick: () => {
+        if (states[name] === IDLE) {
+          makeCall(name, call);
+        } else if (states[name] !== PENDING) {
+          setStates((prev) => ({
+            ...prev,
+            [name]: !states[name]
+          }));
+        }
+      }
+    }, name), /* @__PURE__ */ import_react4.default.createElement("div", {
+      className: "bl-bg-ocre-4 bl-p-a-4",
+      style: { display: states[name] === OPEN ? "block" : "none" }
+    }, results[name] && /* @__PURE__ */ import_react4.default.createElement("pre", null, JSON.stringify(results[name], null, 2))))));
   };
 
   // src/App.tsx
-  var debug4 = createDebugger("src/App.tsx");
+  var debug5 = createDebugger("src/App.tsx");
   var App = () => {
     const apis = useApi();
-    debug4("render", { apis });
+    debug5("render", { apis });
     return /* @__PURE__ */ import_react5.default.createElement("div", {
       className: "bl-container bl-container--small"
     }, /* @__PURE__ */ import_react5.default.createElement(AppContextProvider, null, /* @__PURE__ */ import_react5.default.createElement("div", {

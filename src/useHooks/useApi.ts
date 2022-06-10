@@ -6,6 +6,8 @@ import { ERROR, MESSAGE, WARNING } from '../constants/systemNotificationTypes';
 import { logError } from '../helpers/logError';
 import { createDebugger } from '../helpers/createDebugger';
 
+import { useNotifications } from './useNotifications';
+
 const debug = createDebugger(__filename);
 
 const hyphenToCamelCase = (str) => {
@@ -86,11 +88,12 @@ const fetchApis = async () => {
 };
 
 const useApi = () => {
+  const { addSystemError } = useNotifications();
   const [apis, setApis] = useState({});
   useEffect(() => {
     if (apiStore === IDLE) {
       apiStore === PENDING;
-      fetchApis().then((apis) => {
+      fetchApis(addSystemError).then((apis) => {
         apiStore = apis;
         setApis(apiStore);
       });

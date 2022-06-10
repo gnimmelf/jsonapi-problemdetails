@@ -6,6 +6,7 @@ import { BlInfoBox } from 'buflib';
 import { useApi } from './useHooks/useApi';
 
 import { AppContextProvider } from './components/app-context/AppContext';
+import { Notifications } from './components/notifications/Notifications';
 import { ApiList } from './components/api-list/ApiList';
 
 import './styles/index.scss';
@@ -22,6 +23,7 @@ const App = (): FC => {
   return (
     <div className="bl-container bl-container--small">
       <AppContextProvider>
+        <Notifications />
         <div className="bl-grid bl-grid--two-columns-mobile">
           <BlInfoBox header="JSON API">
             <p>
