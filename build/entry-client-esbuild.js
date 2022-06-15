@@ -26647,10 +26647,10 @@
   var isoStr2Time = (isoStr = "") => (0, import_dayjs.default)(isoStr).format("[kl.] HH:mm.").toLocaleString();
 
   // src/components/notifications/Notifications.tsx
-  var bgColors = {
-    [MESSAGE]: "bl-bg-green-4",
-    [WARNING]: "bl-bg-tomato-4",
-    [ERROR]: "bl-bg-tomato-1"
+  var messageTypeClassNames = {
+    [MESSAGE]: "bl-border--aqua bl-bg-aqua-4",
+    [WARNING]: "bl-border--ocre bl-bg-ocre-4",
+    [ERROR]: "bl-border--tomato bl-bg-tomato-4"
   };
   var RemoveIcon = ({ onClick }) => /* @__PURE__ */ import_react4.default.createElement("span", {
     className: "bl-p-a-1 bl-p-r-4",
@@ -26690,12 +26690,13 @@
         zIndex: "999"
       }
     }, /* @__PURE__ */ import_react4.default.createElement("div", {
-      className: "bl-bg-sand-4 bl-p-a-4 "
+      className: "bl-p-a-4",
+      style: { backdropFilter: "blur(4px) saturate(150%)" }
     }, /* @__PURE__ */ import_react4.default.createElement(RemoveIcon, {
       onClick: () => clearSystemNotifications()
     }), sortedNotifications.map(({ message, type, datetimeISO, id }) => /* @__PURE__ */ import_react4.default.createElement("div", {
       key: id,
-      className: `${bgColors[type]} bl-p-x-2 bl-p-y-1 bl-m-b-1`,
+      className: `${messageTypeClassNames[type]} bl-p-x-2 bl-p-y-1 bl-m-b-1`,
       style: { position: "relative" }
     }, isoStr2Time(datetimeISO), " [", type, "]: ", message, " ", /* @__PURE__ */ import_react4.default.createElement(RemoveIcon, {
       onClick: () => removeSystemNotification({ id })
@@ -26762,12 +26763,15 @@
         status: response.status,
         success: !result.meta.catchBlockError && response.status === 200
       });
-      if (!result.meta.success && (result.meta.status >= 500 || result.type.endsWith("response-parsing-error"))) {
-        addSystemNotification({
-          message: "Something went wrong!",
-          type: ERROR
-        });
-        logError(result);
+      if (!result.meta.success) {
+        if (result.meta.status >= 500 || result.type.endsWith("response-parsing-error")) {
+          result.meta.isRuntimeException = true;
+          addSystemNotification({
+            message: "Something went wrong!",
+            type: ERROR
+          });
+          logError(result);
+        }
       }
       return result;
     };
@@ -29590,9 +29594,15 @@
               res.errors.forEach(({ name, reason }) => {
                 errors[name] = reason;
               });
+              errors.form = {
+                class: WARNING,
+                title: "Noen felter er ikke rigtig fylt inn",
+                details: "Gj\xF8r endringer og send inn igjen"
+              };
               break;
             default:
               errors.form = {
+                class: ERROR,
                 title: "Ops! Noe gikk galt",
                 details: "Pr\xF8v igjen senere"
               };
@@ -29619,7 +29629,7 @@
         className: "bl-border--green",
         style: { width: "100%" }
       }), errors.fullName && /* @__PURE__ */ import_react8.default.createElement("div", {
-        className: "bl-border--tomato bl-bg-tomato-4 bl-p-a-1 bl-m-t-1"
+        className: `${messageTypeClassNames[WARNING]} bl-p-a-1 bl-m-t-1`
       }, /* @__PURE__ */ import_react8.default.createElement(ErrorMessage, {
         name: "fullName",
         style: { width: "100%" }
@@ -29635,12 +29645,12 @@
         className: "bl-border--green",
         style: { width: "100%" }
       }), errors.password && /* @__PURE__ */ import_react8.default.createElement("div", {
-        className: "bl-border--tomato bl-bg-tomato-4 bl-p-a-1 bl-m-t-1"
+        className: `${messageTypeClassNames[WARNING]} bl-p-a-1 bl-m-t-1`
       }, /* @__PURE__ */ import_react8.default.createElement(ErrorMessage, {
         name: "password",
         style: { width: "100%" }
       }))), errors.form && /* @__PURE__ */ import_react8.default.createElement("span", {
-        className: "bl-border--tomato bl-bg-tomato-4 bl-p-a-1"
+        className: `${messageTypeClassNames[errors.form.class]} bl-p-a-1`
       }, errors.form.title, " - ", errors.form.details), /* @__PURE__ */ import_react8.default.createElement("div", {
         className: " bl-grid__full"
       }, /* @__PURE__ */ import_react8.default.createElement("button", {

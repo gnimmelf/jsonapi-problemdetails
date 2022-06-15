@@ -65,16 +65,18 @@ const apiWrapper = ({ apiName, apiCall, notifications }) => {
       success: !result.meta.catchBlockError && response.status === 200,
     });
 
-    if (
-      !result.meta.success &&
-      (result.meta.status >= 500 ||
-        result.type.endsWith('response-parsing-error'))
-    ) {
-      addSystemNotification({
-        message: 'Something went wrong!',
-        type: ERROR,
-      });
-      logError(result);
+    if (!result.meta.success) {
+      if (
+        result.meta.status >= 500 ||
+        result.type.endsWith('response-parsing-error')
+      ) {
+        result.meta.isRuntimeException = true;
+        addSystemNotification({
+          message: 'Something went wrong!',
+          type: ERROR,
+        });
+        logError(result);
+      }
     }
 
     return result;

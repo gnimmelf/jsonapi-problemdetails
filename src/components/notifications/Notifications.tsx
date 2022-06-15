@@ -10,10 +10,10 @@ import { useNotifications } from '../../useHooks/useNotifications';
 
 import { isoStr2Time } from '../../helpers/isoStrFormatters';
 
-const bgColors = {
-  [MESSAGE]: 'bl-bg-green-4',
-  [WARNING]: 'bl-bg-tomato-4',
-  [ERROR]: 'bl-bg-tomato-1',
+export const messageTypeClassNames = {
+  [MESSAGE]: 'bl-border--aqua bl-bg-aqua-4',
+  [WARNING]: 'bl-border--ocre bl-bg-ocre-4',
+  [ERROR]: 'bl-border--tomato bl-bg-tomato-4',
 };
 
 const RemoveIcon = ({ onClick }) => (
@@ -60,12 +60,15 @@ const Notifications: FC = () => {
         zIndex: '999',
       }}
     >
-      <div className="bl-bg-sand-4 bl-p-a-4 ">
+      <div
+        className="bl-p-a-4"
+        style={{ backdropFilter: 'blur(4px) saturate(150%)' }}
+      >
         <RemoveIcon onClick={() => clearSystemNotifications()} />
         {sortedNotifications.map(({ message, type, datetimeISO, id }) => (
           <div
             key={id}
-            className={`${bgColors[type]} bl-p-x-2 bl-p-y-1 bl-m-b-1`}
+            className={`${messageTypeClassNames[type]} bl-p-x-2 bl-p-y-1 bl-m-b-1`}
             style={{ position: 'relative' }}
           >
             {isoStr2Time(datetimeISO)} [{type}]: {message}{' '}

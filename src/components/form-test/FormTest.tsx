@@ -2,10 +2,13 @@ import React, { FC, useEffect, useState } from 'react';
 
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
+import { BlSelect } from 'buflib';
+
 import { useApi } from '../../useHooks/useApi';
 import { useNotifications } from '../../useHooks/useNotifications';
+import { WARNING, ERROR } from '../../constants/systemNotificationTypes';
 
-import { BlSelect } from 'buflib';
+import { messageTypeClassNames } from '../notifications/Notifications';
 
 import { createDebugger } from '../../helpers/createDebugger';
 
@@ -53,9 +56,15 @@ const TestForm: FC = ({ onDone }) => {
               res.errors.forEach(({ name, reason }) => {
                 errors[name] = reason;
               });
+              errors.form = {
+                class: WARNING,
+                title: 'Noen felter er ikke rigtig fylt inn',
+                details: 'Gjør endringer og send inn igjen',
+              };
               break;
             default:
               errors.form = {
+                class: ERROR,
                 title: 'Ops! Noe gikk galt',
                 details: 'Prøv igjen senere',
               };
@@ -85,7 +94,9 @@ const TestForm: FC = ({ onDone }) => {
                   style={{ width: '100%' }}
                 />
                 {errors.fullName && (
-                  <div className="bl-border--tomato bl-bg-tomato-4 bl-p-a-1 bl-m-t-1">
+                  <div
+                    className={`${messageTypeClassNames[WARNING]} bl-p-a-1 bl-m-t-1`}
+                  >
                     <ErrorMessage name="fullName" style={{ width: '100%' }} />
                   </div>
                 )}
@@ -104,14 +115,20 @@ const TestForm: FC = ({ onDone }) => {
                   style={{ width: '100%' }}
                 />
                 {errors.password && (
-                  <div className="bl-border--tomato bl-bg-tomato-4 bl-p-a-1 bl-m-t-1">
+                  <div
+                    className={`${messageTypeClassNames[WARNING]} bl-p-a-1 bl-m-t-1`}
+                  >
                     <ErrorMessage name="password" style={{ width: '100%' }} />
                   </div>
                 )}
               </div>
 
               {errors.form && (
-                <span className="bl-border--tomato bl-bg-tomato-4 bl-p-a-1">
+                <span
+                  className={`${
+                    messageTypeClassNames[errors.form.class]
+                  } bl-p-a-1`}
+                >
                   {errors.form.title} - {errors.form.details}
                 </span>
               )}
