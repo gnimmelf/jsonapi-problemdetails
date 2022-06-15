@@ -26727,12 +26727,7 @@
     });
   };
   var apiStore = null;
-  var resultParsers = {
-    default: async (response) => {
-      const resolved = await response.json();
-      return resolved;
-    }
-  };
+  var resultParsers = {};
   var apiWrapper = ({ apiName, apiCall, notifications }) => {
     const { addSystemError } = notifications;
     return async (...args) => {
@@ -26741,7 +26736,7 @@
       let result;
       try {
         response = await apiCall(...args);
-        result = resultParsers[apiName] ? await resultParsers[apiName](response) : await resultParsers.default(response);
+        result = resultParsers[apiName] ? await resultParsers[apiName](response) : await response.json();
         debug5("fetchParsed", { response, result });
       } catch (err) {
         result = { meta: { catchBlockError: true } };
@@ -26763,12 +26758,10 @@
         status: response.status,
         success: !result.meta.catchBlockError && response.status === 200
       });
-      if (!result.meta.success) {
-        if (result.meta.status >= 500 || result.type.endsWith("response-parsing-error")) {
-          result.meta.isRuntimeException = true;
-          addSystemError(`[Beskrivelse for "${result.type}"]`);
-          logError(result);
-        }
+      if (!result.meta.success && (result.meta.status >= 500 || result.type.endsWith("response-parsing-error"))) {
+        result.meta.isRuntimeException = true;
+        addSystemError(`[Beskrivelse for "${result.type}"]`);
+        logError(result);
       }
       return result;
     };
@@ -26814,11 +26807,11 @@
       if (!apiStore) {
         fetchApis(notifications).then((wrappedApis) => {
           apiStore = wrappedApis;
+          debug5("useApi", { apis, apiStore });
           setApis(wrappedApis);
         });
       }
     }, []);
-    debug5("useApi", { apis, apiStore });
     return apis;
   };
 
@@ -29622,7 +29615,7 @@
       }, /* @__PURE__ */ import_react8.default.createElement(Field, {
         name: "fullName",
         placeholder: "Jane",
-        type: "password",
+        type: "input",
         className: "bl-border--green",
         style: { width: "100%" }
       }), errors.fullName && /* @__PURE__ */ import_react8.default.createElement("div", {
@@ -29647,18 +29640,18 @@
         name: "password",
         style: { width: "100%" }
       }))), errors.form && /* @__PURE__ */ import_react8.default.createElement("span", {
-        className: `${messageTypeClassNames[errors.form.class]} bl-p-a-1`
+        className: `${messageTypeClassNames[errors.form.class]} bl-p-a-1 bl-text-center`
       }, errors.form.title, " - ", errors.form.details), /* @__PURE__ */ import_react8.default.createElement("div", {
-        className: " bl-grid__full"
+        className: " bl-grid__full bl-text-center"
       }, /* @__PURE__ */ import_react8.default.createElement("button", {
         type: "submit",
         disabled: isSubmitting || !apis[selectedApiKey],
         className: "bl-button bl-button--primary"
       }, "Submit to ", selectedApiKey)), /* @__PURE__ */ import_react8.default.createElement("div", {
-        className: " bl-grid__full"
+        className: " bl-grid__full bl-text-center"
       }, /* @__PURE__ */ import_react8.default.createElement(d, {
         value: selectedApiKey,
-        className: "bl-grid__one-half bl-p-a-1",
+        className: "bl-p-a-1",
         onChange: ({ target }) => {
           setSelectedApiKey(target.value);
         }

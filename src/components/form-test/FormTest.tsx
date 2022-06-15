@@ -89,7 +89,7 @@ const TestForm: FC = ({ onDone }) => {
                 <Field
                   name="fullName"
                   placeholder="Jane"
-                  type="password"
+                  type="input"
                   className="bl-border--green"
                   style={{ width: '100%' }}
                 />
@@ -127,13 +127,13 @@ const TestForm: FC = ({ onDone }) => {
                 <span
                   className={`${
                     messageTypeClassNames[errors.form.class]
-                  } bl-p-a-1`}
+                  } bl-p-a-1 bl-text-center`}
                 >
                   {errors.form.title} - {errors.form.details}
                 </span>
               )}
 
-              <div className=" bl-grid__full">
+              <div className=" bl-grid__full bl-text-center">
                 <button
                   type="submit"
                   disabled={isSubmitting || !apis[selectedApiKey]}
@@ -143,10 +143,10 @@ const TestForm: FC = ({ onDone }) => {
                 </button>
               </div>
 
-              <div className=" bl-grid__full">
+              <div className=" bl-grid__full bl-text-center">
                 <BlSelect
                   value={selectedApiKey}
-                  className="bl-grid__one-half bl-p-a-1"
+                  className="bl-p-a-1"
                   onChange={({ target }) => {
                     setSelectedApiKey(target.value);
                   }}

@@ -17,11 +17,12 @@ const hyphenToCamelCase = (str) => {
 let apiStore = null;
 
 const resultParsers = {
-  default: async (response) => {
-    // NOTE! `!response.ok` is assumed to be `json()`-able, otherwise treat as a system exception
+  /*
+  example: async (response) => {
     const resolved = await response.json();
     return resolved;
   },
+  */
 };
 
 const apiWrapper = ({ apiName, apiCall, notifications }) => {
@@ -38,7 +39,7 @@ const apiWrapper = ({ apiName, apiCall, notifications }) => {
 
       result = resultParsers[apiName]
         ? await resultParsers[apiName](response)
-        : await resultParsers.default(response);
+        : await response.json();
 
       debug('fetchParsed', { response, result });
     } catch (err) {
@@ -64,15 +65,14 @@ const apiWrapper = ({ apiName, apiCall, notifications }) => {
       success: !result.meta.catchBlockError && response.status === 200,
     });
 
-    if (!result.meta.success) {
-      if (
-        result.meta.status >= 500 ||
-        result.type.endsWith('response-parsing-error')
-      ) {
-        result.meta.isRuntimeException = true;
-        addSystemError(`[Beskrivelse for "${result.type}"]`);
-        logError(result);
-      }
+    if (
+      !result.meta.success &&
+      (result.meta.status >= 500 ||
+        result.type.endsWith('response-parsing-error'))
+    ) {
+      result.meta.isRuntimeException = true;
+      addSystemError(`[Beskrivelse for "${result.type}"]`);
+      logError(result);
     }
 
     return result;
@@ -125,12 +125,11 @@ const useApi = () => {
     if (!apiStore) {
       fetchApis(notifications).then((wrappedApis) => {
         apiStore = wrappedApis;
+        debug('useApi', { apis, apiStore });
         setApis(wrappedApis);
       });
     }
   }, []);
-
-  debug('useApi', { apis, apiStore });
 
   return apis;
 };
