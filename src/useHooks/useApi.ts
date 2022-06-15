@@ -25,7 +25,9 @@ const resultParsers = {
   },
 };
 
-const apiWrapper = ({ apiName, apiCall, addSystemNotification }) => {
+const apiWrapper = ({ apiName, apiCall, notifications }) => {
+  const { addSystemNotification } = notifications;
+
   return async (...args) => {
     const signal = args.find((arg) => arg instanceof AbortSignal) || {};
 
@@ -43,11 +45,11 @@ const apiWrapper = ({ apiName, apiCall, addSystemNotification }) => {
     } catch (err) {
       result = { meta: { catchBlockError: true } };
       if (signal.aborted) {
-        result.meta.type = WARNING;
+        result.type = `/error-type/request-aborted`;
         result.title = 'Request was cancelled';
         result.details = `Request for (${apiName}) was aborted by signal`;
       } else {
-        result.meta.type = ERROR;
+        result.type = `/error-type/response-parsing-error`;
         result.title = 'Client side parsing error';
         result.details = err.toString();
       }
@@ -60,26 +62,45 @@ const apiWrapper = ({ apiName, apiCall, addSystemNotification }) => {
     Object.assign(result.meta, {
       url: response.url,
       status: response.status,
-      success: response.status === 200,
+      success: !result.meta.catchBlockError && response.status === 200,
     });
 
-    if (response.status >= 500 || result.meta.type === ERROR) {
+    if (
+      !result.meta.success &&
+      (result.meta.status >= 500 ||
+        result.type.endsWith('response-parsing-error'))
+    ) {
       addSystemNotification({
         message: 'Something went wrong!',
         type: ERROR,
       });
+      logError(result);
     }
 
     return result;
   };
 };
 
-const fetchApis = async (addSystemNotification) => {
+const getCustomApis = (notifications) => ({
+  getTextContent: apiWrapper({
+    apiName: 'getTextContent',
+    apiCall: () => fetch('/'),
+    notifications,
+  }),
+  nonExistingUrl: apiWrapper({
+    apiName: 'nonExitingUrl',
+    apiCall: () => fetch('/flemming'),
+    notifications,
+  }),
+});
+
+const fetchApis = async (notifications) => {
   const getApis = apiWrapper({
     apiName: 'initApis',
     apiCall: () => fetch('/api'),
-    addSystemNotification,
+    notifications,
   });
+
   const { data: routes } = await getApis();
 
   return routes.reduce((acc, { path, methods }) => {
@@ -90,21 +111,21 @@ const fetchApis = async (addSystemNotification) => {
         acc[apiName] = apiWrapper({
           apiName,
           apiCall: () => fetch(`/api${path}`, { method }),
-          addSystemNotification,
+          notifications,
         });
       });
     }
     return acc;
-  }, {});
+  }, getCustomApis(notifications));
 };
 
 const useApi = () => {
-  const { addSystemNotification } = useNotifications();
+  const notifications = useNotifications();
   const [apis, setApis] = useState(apiStore || {});
 
   useEffect(() => {
     if (!apiStore) {
-      fetchApis(addSystemNotification).then((wrappedApis) => {
+      fetchApis(notifications).then((wrappedApis) => {
         apiStore = wrappedApis;
         setApis(wrappedApis);
       });

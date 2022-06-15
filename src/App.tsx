@@ -6,6 +6,7 @@ import { BlInfoBox } from 'buflib';
 import { AppContextProvider } from './components/app-context/AppContext';
 import { Notifications } from './components/notifications/Notifications';
 import { ApiList } from './components/api-list/ApiList';
+import { FormTest } from './components/form-test/FormTest';
 
 import 'feather-icons';
 import './styles/index.scss';
@@ -18,8 +19,8 @@ const App = (): FC => {
   return (
     <AppContextProvider>
       <Notifications />
-      <div className="bl-container bl-container--small">
-        <div className="bl-grid bl-grid--two-columns-mobile">
+      <div className="bl-container bl-container--small ">
+        <div className="bl-grid bl-grid--two-columns bl-m-b-2">
           <BlInfoBox header="JSON API">
             <p>
               Truly generic problems -- i.e., conditions that could potentially
@@ -34,6 +35,22 @@ const App = (): FC => {
               PUT request is self-explanatory.
             </p>
           </BlInfoBox>
+        </div>
+        <div className="bl-m-b-2">
+          <BlInfoBox header="Fetch Api">
+            <p>
+              The Promise returned from fetch() won't reject on HTTP error
+              status even if the response is an HTTP 404 or 500. Instead, as
+              soon as the server responds with headers, the Promise will resolve
+              normally (with the ok property of the response set to false if the
+              response isn't in the range 200–299), and it will only reject on
+              network failure or if anything prevented the request from
+              completing.
+            </p>
+          </BlInfoBox>
+        </div>
+        <div className="">
+          <FormTest />
         </div>
         <ApiList />
       </div>

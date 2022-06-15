@@ -73,12 +73,12 @@ api.get('/fields-invalid', (req, res) => {
     error(req, 'fields-invalid', {
       errors: [
         {
-          name: 'age',
-          reason: 'must be a positive integer',
+          name: 'fullName',
+          reason: 'must be firstname and last name',
         },
         {
-          name: 'color',
-          reason: "must be 'green', 'red' or 'blue'",
+          name: 'password',
+          reason: 'must be > 4 chars long',
         },
       ],
       title: 'Failed to update profile',
@@ -125,13 +125,13 @@ api.get('/fields-conflict', (req, res) => {
     error(req, 'fields-conflict', {
       errors: [
         {
-          name: 'gender',
-          reason: "Value is 'other'",
+          name: 'password',
+          reason: 'Cannot be equal to fullName',
         },
         {
-          name: 'league',
-          reason: "Value is 'womens'",
-        },
+          "name": "fullName",
+          "reason": "Cannot be equal to password"
+        }
       ],
       title: 'Failed to update profile',
       detail: 'Conflicting values',
@@ -148,12 +148,6 @@ api.get('/division-by-zero', (req, res) => {
       detail: 'Could not divide surplus',
     }),
   );
-});
-
-// Non-json
-
-api.get('/non-json-result', (req, res) => {
-  res.send('Hello world!');
 });
 
 // Extract routes
