@@ -49,9 +49,9 @@ const App = (): FC => {
             </p>
           </BlInfoBox>
         </div>
-        <div className="">
-          <FormTest />
-        </div>
+
+        <FormTest />
+
         <ApiList />
       </div>
     </AppContextProvider>

@@ -3,7 +3,6 @@ import slugify from 'slugify';
 
 import { useNotifications } from './useNotifications';
 
-import { ERROR, WARNING } from '../constants/systemNotificationTypes';
 import { logError } from '../helpers/logError';
 import { createDebugger } from '../helpers/createDebugger';
 
@@ -26,7 +25,7 @@ const resultParsers = {
 };
 
 const apiWrapper = ({ apiName, apiCall, notifications }) => {
-  const { addSystemNotification } = notifications;
+  const { addSystemError } = notifications;
 
   return async (...args) => {
     const signal = args.find((arg) => arg instanceof AbortSignal) || {};
@@ -71,10 +70,7 @@ const apiWrapper = ({ apiName, apiCall, notifications }) => {
         result.type.endsWith('response-parsing-error')
       ) {
         result.meta.isRuntimeException = true;
-        addSystemNotification({
-          message: 'Something went wrong!',
-          type: ERROR,
-        });
+        addSystemError(`[Beskrivelse for "${result.type}"]`);
         logError(result);
       }
     }

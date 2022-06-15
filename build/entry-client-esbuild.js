@@ -26734,7 +26734,7 @@
     }
   };
   var apiWrapper = ({ apiName, apiCall, notifications }) => {
-    const { addSystemNotification } = notifications;
+    const { addSystemError } = notifications;
     return async (...args) => {
       const signal = args.find((arg) => arg instanceof AbortSignal) || {};
       let response;
@@ -26766,10 +26766,7 @@
       if (!result.meta.success) {
         if (result.meta.status >= 500 || result.type.endsWith("response-parsing-error")) {
           result.meta.isRuntimeException = true;
-          addSystemNotification({
-            message: "Something went wrong!",
-            type: ERROR
-          });
+          addSystemError(`[Beskrivelse for "${result.type}"]`);
           logError(result);
         }
       }
@@ -29602,9 +29599,9 @@
               break;
             default:
               errors.form = {
-                class: ERROR,
-                title: "Ops! Noe gikk galt",
-                details: "Pr\xF8v igjen senere"
+                class: res.meta.isRuntimeException ? ERROR : WARNING,
+                title: "Kunne ikke oppdatere profilen din",
+                details: "Noe gikk galt. Pr\xF8v igjen senere"
               };
           }
         }
@@ -29700,9 +29697,7 @@
       className: "bl-m-b-2"
     }, /* @__PURE__ */ import_react9.default.createElement(v, {
       header: "Fetch Api"
-    }, /* @__PURE__ */ import_react9.default.createElement("p", null, "The Promise returned from fetch() won't reject on HTTP error status even if the response is an HTTP 404 or 500. Instead, as soon as the server responds with headers, the Promise will resolve normally (with the ok property of the response set to false if the response isn't in the range 200\u2013299), and it will only reject on network failure or if anything prevented the request from completing."))), /* @__PURE__ */ import_react9.default.createElement("div", {
-      className: ""
-    }, /* @__PURE__ */ import_react9.default.createElement(FormTest, null)), /* @__PURE__ */ import_react9.default.createElement(ApiList, null)));
+    }, /* @__PURE__ */ import_react9.default.createElement("p", null, "The Promise returned from fetch() won't reject on HTTP error status even if the response is an HTTP 404 or 500. Instead, as soon as the server responds with headers, the Promise will resolve normally (with the ok property of the response set to false if the response isn't in the range 200\u2013299), and it will only reject on network failure or if anything prevented the request from completing."))), /* @__PURE__ */ import_react9.default.createElement(FormTest, null), /* @__PURE__ */ import_react9.default.createElement(ApiList, null)));
   };
   var container = document.getElementById("app");
   var root2 = (0, import_client.createRoot)(container);

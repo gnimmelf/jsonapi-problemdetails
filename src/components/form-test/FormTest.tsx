@@ -64,9 +64,9 @@ const TestForm: FC = ({ onDone }) => {
               break;
             default:
               errors.form = {
-                class: ERROR,
-                title: 'Ops! Noe gikk galt',
-                details: 'Prøv igjen senere',
+                class: res.meta.isRuntimeException ? ERROR : WARNING,
+                title: 'Kunne ikke oppdatere profilen din',
+                details: 'Noe gikk galt. Prøv igjen senere',
               };
           }
         }
