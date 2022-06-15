@@ -26730,6 +26730,8 @@
   var resultParsers = {};
   var apiWrapper = ({ apiName, apiCall, notifications }) => {
     const { addSystemError } = notifications;
+    const { location } = window;
+    const typeUrlBase = `${location.protocol}://${location.host}/error-type`;
     return async (...args) => {
       const signal = args.find((arg) => arg instanceof AbortSignal) || {};
       let response;
@@ -26741,11 +26743,11 @@
       } catch (err) {
         result = { meta: { catchBlockError: true } };
         if (signal.aborted) {
-          result.type = `/error-type/request-aborted`;
+          result.type = `${typeUrlBase}/request-aborted`;
           result.title = "Request was cancelled";
           result.details = `Request for (${apiName}) was aborted by signal`;
         } else {
-          result.type = `/error-type/response-parsing-error`;
+          result.type = `${typeUrlBase}/response-parsing-error`;
           result.title = "Client side parsing error";
           result.details = err.toString();
         }
