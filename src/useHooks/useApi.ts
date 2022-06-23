@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import slugify from 'slugify';
 
+import { useAppContext } from './useAppContext';
 import { useNotifications } from './useNotifications';
 
 import { logError } from '../helpers/logError';
@@ -14,7 +15,75 @@ const hyphenToCamelCase = (str) => {
   });
 };
 
-let apiStore = null;
+const MODULE = {
+  apiStore: null,
+  setApiCallState: null,
+  notifications: null,
+};
+
+const FETCH_STATES = Object.freeze({
+  IDLE: 'IDLE',
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+});
+
+const fetchStateProxyHandler = {
+  get(target, prop) {
+    switch (prop) {
+      // Methods
+      case 'call':
+        return target.apiCall;
+      /* eslint-disable no-return-assign */
+      /* eslint-disable no-param-reassign */
+      case 'setIdle':
+        return () => (target.fetchState = FETCH_STATES.IDLE);
+      case 'setPending':
+        return () => (target.fetchState = FETCH_STATES.PENDING);
+      case 'setSuccess':
+        return () => (target.fetchState = FETCH_STATES.SUCCESS);
+      case 'setFailed':
+        return () => (target.fetchState = FETCH_STATES.FAILED);
+      /* eslint-enable no-param-reassign */
+      /* eslint-enable no-return-assign */
+
+      // Props
+      case 'isIdle':
+        return target.fetchState === FETCH_STATES.IDLE;
+      case 'isPending':
+        return target.fetchState === FETCH_STATES.PENDING;
+      case 'isSuccess':
+        return target.fetchState === FETCH_STATES.SUCCESS;
+      case 'isFailed':
+        return target.fetchState === FETCH_STATES.FAILED;
+      default:
+        return target[prop];
+    }
+  },
+  set(target, prop, value) {
+    switch (prop) {
+      /* eslint-disable no-return-assign */
+      /* eslint-disable no-param-reassign */
+      case 'data':
+        return (target.data = value);
+      /* eslint-disable no-return-assign */
+      /* eslint-disable no-param-reassign */
+      default:
+        throw new Error(`Unknown prop '${prop}`);
+    }
+  },
+};
+
+const createApiProxy = (apiCall, { fetchState, data } = {}) => {
+  return new Proxy(
+    {
+      apiCall,
+      data: data || null,
+      fetchState: fetchState || FETCH_STATES.IDLE,
+    },
+    fetchStateProxyHandler,
+  );
+};
 
 const resultParsers = {
   /*
@@ -25,8 +94,8 @@ const resultParsers = {
   */
 };
 
-const apiWrapper = ({ apiName, apiCall, notifications }) => {
-  const { addSystemError } = notifications;
+const getWrappedApiCall = ({ apiName, apiCall }) => {
+  const { addSystemError } = MODULE.notifications;
   const { location } = window;
   const typeUrlBase = `${location.protocol}://${location.host}/error-type`;
 
@@ -36,6 +105,7 @@ const apiWrapper = ({ apiName, apiCall, notifications }) => {
     let response;
     let result;
 
+    MODULE.setApiCallState(apiName, { fetchState: FETCH_STATES.PENDING });
     try {
       response = await apiCall(...args);
 
@@ -77,28 +147,32 @@ const apiWrapper = ({ apiName, apiCall, notifications }) => {
       logError(result);
     }
 
+    debug('getWrappedApiCall', { result });
+
+    MODULE.setApiCallState(apiName, {
+      fetchState: FETCH_STATES[result.meta.success ? 'SUCCESS' : 'FAILED'],
+      data: result,
+    });
+
     return result;
   };
 };
 
-const getCustomApis = (notifications) => ({
-  getTextContent: apiWrapper({
+const getCustomApis = () => ({
+  getTextContent: getWrappedApiCall({
     apiName: 'getTextContent',
     apiCall: () => fetch('/'),
-    notifications,
   }),
-  nonExistingUrl: apiWrapper({
-    apiName: 'nonExitingUrl',
+  nonExistingUrl: getWrappedApiCall({
+    apiName: 'nonExistingUrl',
     apiCall: () => fetch('/flemming'),
-    notifications,
   }),
 });
 
-const fetchApis = async (notifications) => {
-  const getApis = apiWrapper({
+const fetchApis = async () => {
+  const getApis = getWrappedApiCall({
     apiName: 'initApis',
     apiCall: () => fetch('/api'),
-    notifications,
   });
 
   const { data: routes } = await getApis();
@@ -108,32 +182,61 @@ const fetchApis = async (notifications) => {
     if (path !== '/') {
       Object.keys(methods).forEach((method) => {
         const apiName = hyphenToCamelCase([method, slugify(path)].join('-'));
-        acc[apiName] = apiWrapper({
+        acc[apiName] = getWrappedApiCall({
           apiName,
           apiCall: () => fetch(`/api${path}`, { method }),
-          notifications,
         });
       });
     }
     return acc;
-  }, getCustomApis(notifications));
+  }, getCustomApis());
 };
 
 const useApi = () => {
-  const notifications = useNotifications();
-  const [apis, setApis] = useState(apiStore || {});
+  // eslint-disable-next-line no-unused-vars
+  const [{ apiStates }, setAppState] = useAppContext();
+  const [apis, setApis] = useState(MODULE.apiStore || {});
+
+  // `setApiCallState` is defined on module scope
+  MODULE.notifications = useNotifications();
+  MODULE.setApiCallState = (apiName, { fetchState, data = undefined }) =>
+    setAppState((prev) => {
+      const prevApiStates = prev?.apiStates || {};
+      const prevApiState = prevApiStates[apiName] || {};
+      const next = {
+        ...prev,
+        apiStates: {
+          ...prevApiStates,
+          [apiName]: {
+            ...prevApiState,
+            fetchState,
+            data: data || fetchState.data,
+          },
+        },
+      };
+      debug('setApiCallState', { prev, next });
+      return next;
+    });
 
   useEffect(() => {
-    if (!apiStore) {
-      fetchApis(notifications).then((wrappedApis) => {
-        apiStore = wrappedApis;
-        debug('useApi', { apis, apiStore });
+    if (!MODULE.apiStore) {
+      // Only run once on module loaded
+      fetchApis().then((wrappedApis) => {
+        MODULE.apiStore = wrappedApis;
+        debug('apiStore', MODULE.apiStore);
         setApis(wrappedApis);
       });
     }
   }, []);
 
-  return apis;
+  // Every time, re-wrap the apis and their the updated state in the proxy
+  return Object.entries(apis).reduce(
+    (acc, [apiName, apiCall]) => ({
+      ...acc,
+      [apiName]: createApiProxy(apiCall, apiStates[apiName]),
+    }),
+    {},
+  );
 };
 
 export { useApi };

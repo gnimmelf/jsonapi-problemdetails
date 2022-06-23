@@ -17,8 +17,9 @@ const AppContextProvider: ReactNode = ({ children }) => {
   const stateString = JSON.stringify(state);
 
   debug('AppContextProvider', { state });
-  // debug('AppContextProvider', stateString);
+  // debug('AppContextProvider', JSON.stringify(state, null, 2));
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const store = useMemo(() => [state, setAppState], [stateString]);
 
   return <AppContext.Provider value={store}>{children}</AppContext.Provider>;

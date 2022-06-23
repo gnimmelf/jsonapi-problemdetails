@@ -26586,9 +26586,7 @@
   // src/useHooks/useNotifications.ts
   var debug4 = createDebugger("src/useHooks/useNotifications.ts");
   var useNotifications = () => {
-    const appContext = useAppContext();
-    debug4("useNotifications", appContext);
-    const [{ systemNotifications }, setAppState] = appContext;
+    const [{ systemNotifications }, setAppState] = useAppContext();
     const addSystemNotification = ({ message, type = MESSAGE }) => {
       setAppState((prev) => {
         const value = prev.systemNotifications.concat({
@@ -26706,10 +26704,6 @@
   // src/components/api-list/ApiList.tsx
   var import_react6 = __toESM(require_react());
 
-  // src/constants/fetchStates.ts
-  var IDLE = "IDLE";
-  var PENDING = "PENDING";
-
   // src/useHooks/useApi.ts
   var import_react5 = __toESM(require_react());
   var import_slugify = __toESM(require_slugify());
@@ -26726,16 +26720,68 @@
       return g[1].toUpperCase();
     });
   };
-  var apiStore = null;
+  var MODULE = {
+    apiStore: null,
+    setApiCallState: null,
+    notifications: null
+  };
+  var FETCH_STATES = Object.freeze({
+    IDLE: "IDLE",
+    PENDING: "PENDING",
+    SUCCESS: "SUCCESS",
+    FAILED: "FAILED"
+  });
+  var fetchStateProxyHandler = {
+    get(target, prop) {
+      switch (prop) {
+        case "call":
+          return target.apiCall;
+        case "setIdle":
+          return () => target.fetchState = FETCH_STATES.IDLE;
+        case "setPending":
+          return () => target.fetchState = FETCH_STATES.PENDING;
+        case "setSuccess":
+          return () => target.fetchState = FETCH_STATES.SUCCESS;
+        case "setFailed":
+          return () => target.fetchState = FETCH_STATES.FAILED;
+        case "isIdle":
+          return target.fetchState === FETCH_STATES.IDLE;
+        case "isPending":
+          return target.fetchState === FETCH_STATES.PENDING;
+        case "isSuccess":
+          return target.fetchState === FETCH_STATES.SUCCESS;
+        case "isFailed":
+          return target.fetchState === FETCH_STATES.FAILED;
+        default:
+          return target[prop];
+      }
+    },
+    set(target, prop, value) {
+      switch (prop) {
+        case "data":
+          return target.data = value;
+        default:
+          throw new Error(`Unknown prop '${prop}`);
+      }
+    }
+  };
+  var createApiProxy = (apiCall, { fetchState, data } = {}) => {
+    return new Proxy({
+      apiCall,
+      data: data || null,
+      fetchState: fetchState || FETCH_STATES.IDLE
+    }, fetchStateProxyHandler);
+  };
   var resultParsers = {};
-  var apiWrapper = ({ apiName, apiCall, notifications }) => {
-    const { addSystemError } = notifications;
+  var getWrappedApiCall = ({ apiName, apiCall }) => {
+    const { addSystemError } = MODULE.notifications;
     const { location } = window;
     const typeUrlBase = `${location.protocol}://${location.host}/error-type`;
     return async (...args) => {
       const signal = args.find((arg) => arg instanceof AbortSignal) || {};
       let response;
       let result;
+      MODULE.setApiCallState(apiName, { fetchState: FETCH_STATES.PENDING });
       try {
         response = await apiCall(...args);
         result = resultParsers[apiName] ? await resultParsers[apiName](response) : await response.json();
@@ -26765,26 +26811,28 @@
         addSystemError(`[Beskrivelse for "${result.type}"]`);
         logError(result);
       }
+      debug5("getWrappedApiCall", { result });
+      MODULE.setApiCallState(apiName, {
+        fetchState: FETCH_STATES[result.meta.success ? "SUCCESS" : "FAILED"],
+        data: result
+      });
       return result;
     };
   };
-  var getCustomApis = (notifications) => ({
-    getTextContent: apiWrapper({
+  var getCustomApis = () => ({
+    getTextContent: getWrappedApiCall({
       apiName: "getTextContent",
-      apiCall: () => fetch("/"),
-      notifications
+      apiCall: () => fetch("/")
     }),
-    nonExistingUrl: apiWrapper({
-      apiName: "nonExitingUrl",
-      apiCall: () => fetch("/flemming"),
-      notifications
+    nonExistingUrl: getWrappedApiCall({
+      apiName: "nonExistingUrl",
+      apiCall: () => fetch("/flemming")
     })
   });
-  var fetchApis = async (notifications) => {
-    const getApis = apiWrapper({
+  var fetchApis = async () => {
+    const getApis = getWrappedApiCall({
       apiName: "initApis",
-      apiCall: () => fetch("/api"),
-      notifications
+      apiCall: () => fetch("/api")
     });
     const { data: routes } = await getApis();
     return routes.reduce((acc, { path, methods }) => {
@@ -26792,85 +26840,92 @@
       if (path !== "/") {
         Object.keys(methods).forEach((method) => {
           const apiName = hyphenToCamelCase([method, (0, import_slugify.default)(path)].join("-"));
-          acc[apiName] = apiWrapper({
+          acc[apiName] = getWrappedApiCall({
             apiName,
-            apiCall: () => fetch(`/api${path}`, { method }),
-            notifications
+            apiCall: () => fetch(`/api${path}`, { method })
           });
         });
       }
       return acc;
-    }, getCustomApis(notifications));
+    }, getCustomApis());
   };
   var useApi = () => {
-    const notifications = useNotifications();
-    const [apis, setApis] = (0, import_react5.useState)(apiStore || {});
+    const [{ apiStates }, setAppState] = useAppContext();
+    const [apis, setApis] = (0, import_react5.useState)(MODULE.apiStore || {});
+    MODULE.notifications = useNotifications();
+    MODULE.setApiCallState = (apiName, { fetchState, data = void 0 }) => setAppState((prev) => {
+      const prevApiStates = prev?.apiStates || {};
+      const prevApiState = prevApiStates[apiName] || {};
+      const next = {
+        ...prev,
+        apiStates: {
+          ...prevApiStates,
+          [apiName]: {
+            ...prevApiState,
+            fetchState,
+            data: data || fetchState.data
+          }
+        }
+      };
+      debug5("setApiCallState", { prev, next });
+      return next;
+    });
     (0, import_react5.useEffect)(() => {
-      if (!apiStore) {
-        fetchApis(notifications).then((wrappedApis) => {
-          apiStore = wrappedApis;
-          debug5("useApi", { apis, apiStore });
+      if (!MODULE.apiStore) {
+        fetchApis().then((wrappedApis) => {
+          MODULE.apiStore = wrappedApis;
+          debug5("apiStore", MODULE.apiStore);
           setApis(wrappedApis);
         });
       }
     }, []);
-    return apis;
+    return Object.entries(apis).reduce((acc, [apiName, apiCall]) => ({
+      ...acc,
+      [apiName]: createApiProxy(apiCall, apiStates[apiName])
+    }), {});
   };
 
   // src/components/api-list/ApiList.tsx
   var debug6 = createDebugger("src/components/api-list/ApiList.tsx");
-  var OPEN = true;
   var ApiList = () => {
     const apis = useApi();
-    const [results, setResults] = (0, import_react6.useState)({});
-    const [states, setStates] = (0, import_react6.useState)({});
-    async function makeCall(name, call) {
-      setStates((prev) => ({
-        ...prev,
-        [name]: PENDING
-      }));
-      const result = await call();
-      setResults((prev) => ({
-        ...prev,
-        [name]: result
-      }));
-      setStates((prev) => ({
-        ...prev,
-        [name]: OPEN
-      }));
+    const [isOpenStates, setIsOpenStates] = (0, import_react6.useState)({});
+    const setApiNameOpenState = (apiName, isOpen) => setIsOpenStates((prev) => ({
+      ...prev,
+      [apiName]: isOpen
+    }));
+    async function makeCall(apiName) {
+      setApiNameOpenState(apiName, true);
+      await apis[apiName].call();
     }
-    (0, import_react6.useEffect)(() => {
-      setStates(Object.keys(apis).reduce((acc, name) => ({
-        ...acc,
-        [name]: IDLE
-      }), {}));
-    }, [apis]);
-    debug6("render", { apis, states, results });
-    return /* @__PURE__ */ import_react6.default.createElement("div", null, Object.entries(apis).map(([name, call]) => /* @__PURE__ */ import_react6.default.createElement("div", {
-      key: name,
+    debug6("render", {
+      apis,
+      isOpenStates
+    });
+    return /* @__PURE__ */ import_react6.default.createElement("div", null, Object.entries(apis).map(([apiName, apiState]) => /* @__PURE__ */ import_react6.default.createElement("div", {
+      key: apiName,
       className: "bl-p-y-2"
     }, /* @__PURE__ */ import_react6.default.createElement("button", {
       type: "button",
-      disabled: states[name] === PENDING,
+      disabled: apiState.isPending,
       className: "bl-button bl-button--primary bl-button--fluid",
       onClick: () => {
-        if (states[name] === IDLE) {
-          makeCall(name, call);
-        } else if (states[name] !== PENDING) {
-          setStates((prev) => ({
-            ...prev,
-            [name]: !states[name]
-          }));
+        if (apiState.isIdle) {
+          makeCall(apiName);
+        } else {
+          setApiNameOpenState(apiName, !isOpenStates[apiName]);
         }
       }
-    }, name), /* @__PURE__ */ import_react6.default.createElement("div", {
+    }, apiName), /* @__PURE__ */ import_react6.default.createElement("div", {
       className: "bl-bg-ocre-4 bl-p-a-4",
-      style: { display: states[name] === OPEN ? "block" : "none" }
-    }, results[name] && /* @__PURE__ */ import_react6.default.createElement(import_react6.default.Fragment, null, /* @__PURE__ */ import_react6.default.createElement("pre", null, JSON.stringify(results[name], null, 2)), /* @__PURE__ */ import_react6.default.createElement("button", {
+      style: {
+        display: isOpenStates[apiName] ? "block" : "none"
+      }
+    }, apiState.data && /* @__PURE__ */ import_react6.default.createElement(import_react6.default.Fragment, null, /* @__PURE__ */ import_react6.default.createElement("pre", null, JSON.stringify(apiState.data, null, 2)), /* @__PURE__ */ import_react6.default.createElement("button", {
       type: "button",
-      disabled: states[name] === PENDING,
+      disabled: apiState.isPending,
       className: "bl-button bl-button--secondary bl-button--fluid",
-      onClick: () => makeCall(name, call)
+      onClick: () => makeCall(apiName)
     }, "Reload"))))));
   };
 
@@ -29574,8 +29629,13 @@
       onSubmit: async (values, actions) => {
         const { setErrors } = actions;
         const errors = {};
-        debug7(`onSubmit:${selectedApiKey}#1`, { values, actions });
-        const res = await apis[selectedApiKey](values);
+        debug7(`onSubmit:${selectedApiKey}#1`, {
+          values,
+          actions,
+          api: apis[selectedApiKey],
+          call: apis[selectedApiKey].call
+        });
+        const res = await apis[selectedApiKey].call(values);
         debug7(`onSubmit:${selectedApiKey}#2`, { res });
         if (!res.meta.success) {
           const errorType = res.type.split("/").pop();

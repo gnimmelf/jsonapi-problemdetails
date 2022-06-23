@@ -43,8 +43,13 @@ const TestForm: FC = ({ onDone }) => {
         const { setErrors } = actions;
         const errors = {};
 
-        debug(`onSubmit:${selectedApiKey}#1`, { values, actions });
-        const res = await apis[selectedApiKey](values);
+        debug(`onSubmit:${selectedApiKey}#1`, {
+          values,
+          actions,
+          api: apis[selectedApiKey],
+          call: apis[selectedApiKey].call,
+        });
+        const res = await apis[selectedApiKey].call(values);
         debug(`onSubmit:${selectedApiKey}#2`, { res });
 
         if (!res.meta.success) {

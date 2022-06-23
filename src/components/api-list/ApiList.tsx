@@ -1,84 +1,64 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import { IDLE, PENDING } from '../../constants/fetchStates';
-
 import { useApi } from '../../useHooks/useApi';
 
 import { createDebugger } from '../../helpers/createDebugger';
 
 const debug = createDebugger(__filename);
 
-const OPEN = true;
-
 const ApiList = (): FC => {
   const apis = useApi();
 
-  const [results, setResults] = useState({});
-  const [states, setStates] = useState({});
+  const [isOpenStates, setIsOpenStates] = useState({});
 
-  async function makeCall(name, call) {
-    setStates((prev) => ({
+  const setApiNameOpenState = (apiName, isOpen) =>
+    setIsOpenStates((prev) => ({
       ...prev,
-      [name]: PENDING,
+      [apiName]: isOpen,
     }));
-    const result = await call();
-    setResults((prev) => ({
-      ...prev,
-      [name]: result,
-    }));
-    setStates((prev) => ({
-      ...prev,
-      [name]: OPEN,
-    }));
+
+  async function makeCall(apiName) {
+    setApiNameOpenState(apiName, true);
+    await apis[apiName].call();
   }
 
-  useEffect(() => {
-    setStates(
-      Object.keys(apis).reduce(
-        (acc, name) => ({
-          ...acc,
-          [name]: IDLE,
-        }),
-        {},
-      ),
-    );
-  }, [apis]);
-
-  debug('render', { apis, states, results });
+  debug('render', {
+    apis,
+    isOpenStates,
+  });
 
   return (
     <div>
-      {Object.entries(apis).map(([name, call]) => (
-        <div key={name} className="bl-p-y-2">
+      {Object.entries(apis).map(([apiName, apiState]) => (
+        <div key={apiName} className="bl-p-y-2">
           <button
             type="button"
-            disabled={states[name] === PENDING}
+            disabled={apiState.isPending}
             className="bl-button bl-button--primary bl-button--fluid"
             onClick={() => {
-              if (states[name] === IDLE) {
-                makeCall(name, call);
-              } else if (states[name] !== PENDING) {
-                setStates((prev) => ({
-                  ...prev,
-                  [name]: !states[name],
-                }));
+              if (apiState.isIdle) {
+                makeCall(apiName);
+              } else {
+                setApiNameOpenState(apiName, !isOpenStates[apiName]);
               }
             }}
           >
-            {name}
+            {apiName}
           </button>
           <div
             className="bl-bg-ocre-4 bl-p-a-4"
-            style={{ display: states[name] === OPEN ? 'block' : 'none' }}
+            style={{
+              display: isOpenStates[apiName] ? 'block' : 'none',
+            }}
           >
-            {results[name] && (
+            {apiState.data && (
               <>
-                <pre>{JSON.stringify(results[name], null, 2)}</pre>
+                <pre>{JSON.stringify(apiState.data, null, 2)}</pre>
                 <button
                   type="button"
-                  disabled={states[name] === PENDING}
+                  disabled={apiState.isPending}
                   className="bl-button bl-button--secondary bl-button--fluid"
-                  onClick={() => makeCall(name, call)}
+                  onClick={() => makeCall(apiName)}
                 >
                   Reload
                 </button>

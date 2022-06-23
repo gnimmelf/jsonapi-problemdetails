@@ -9,10 +9,7 @@ import { createDebugger } from '../helpers/createDebugger';
 const debug = createDebugger(__filename);
 
 const useNotifications = () => {
-  const appContext = useAppContext();
-  debug('useNotifications', appContext);
-
-  const [{ systemNotifications }, setAppState] = appContext;
+  const [{ systemNotifications }, setAppState] = useAppContext();
 
   const addSystemNotification = ({ message, type = MESSAGE }) => {
     setAppState((prev) => {
