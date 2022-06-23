@@ -26819,7 +26819,7 @@
       return result;
     };
   };
-  var getCustomApis = () => ({
+  var getCustomApiCalls = () => ({
     getTextContent: getWrappedApiCall({
       apiName: "getTextContent",
       apiCall: () => fetch("/")
@@ -26829,13 +26829,16 @@
       apiCall: () => fetch("/flemming")
     })
   });
-  var fetchApis = async () => {
+  var fetchApiRoutes = async () => {
     const getApis = getWrappedApiCall({
       apiName: "initApis",
       apiCall: () => fetch("/api")
     });
-    const { data: routes } = await getApis();
-    return routes.reduce((acc, { path, methods }) => {
+    const { data: apiRoutes } = await getApis();
+    return apiRoutes;
+  };
+  var createApiCallsFromRoutes = (apiRoutes) => {
+    const apiCalls = apiRoutes.reduce((acc, { path, methods }) => {
       debug5("fetchApis", path);
       if (path !== "/") {
         Object.keys(methods).forEach((method) => {
@@ -26847,7 +26850,8 @@
         });
       }
       return acc;
-    }, getCustomApis());
+    }, getCustomApiCalls());
+    return apiCalls;
   };
   var useApi = () => {
     const [{ apiStates }, setAppState] = useAppContext();
@@ -26872,17 +26876,18 @@
     });
     (0, import_react5.useEffect)(() => {
       if (!MODULE.apiStore) {
-        fetchApis().then((wrappedApis) => {
-          MODULE.apiStore = wrappedApis;
+        fetchApiRoutes().then(createApiCallsFromRoutes).then((apiCalls) => {
+          MODULE.apiStore = apiCalls;
           debug5("apiStore", MODULE.apiStore);
-          setApis(wrappedApis);
+          setApis(apiCalls);
         });
       }
     }, []);
-    return Object.entries(apis).reduce((acc, [apiName, apiCall]) => ({
+    const statefulApis = Object.entries(apis).reduce((acc, [apiName, apiCall]) => ({
       ...acc,
       [apiName]: createApiProxy(apiCall, apiStates[apiName])
     }), {});
+    return statefulApis;
   };
 
   // src/components/api-list/ApiList.tsx
@@ -29724,7 +29729,7 @@
     });
   };
   var FormTest = () => {
-    const { addSystemMessage, addSystemError } = useNotifications();
+    const { addSystemMessage } = useNotifications();
     const onDone = (res, requestData) => {
       debug7("onDone", { res, requestData });
       if (res.meta.success) {

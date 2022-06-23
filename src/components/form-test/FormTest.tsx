@@ -172,7 +172,7 @@ const TestForm: FC = ({ onDone }) => {
 };
 
 const FormTest: FC = () => {
-  const { addSystemMessage, addSystemError } = useNotifications();
+  const { addSystemMessage } = useNotifications();
 
   const onDone = (res, requestData) => {
     debug('onDone', { res, requestData });

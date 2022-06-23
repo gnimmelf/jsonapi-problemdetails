@@ -158,7 +158,7 @@ const getWrappedApiCall = ({ apiName, apiCall }) => {
   };
 };
 
-const getCustomApis = () => ({
+const getCustomApiCalls = () => ({
   getTextContent: getWrappedApiCall({
     apiName: 'getTextContent',
     apiCall: () => fetch('/'),
@@ -169,15 +169,19 @@ const getCustomApis = () => ({
   }),
 });
 
-const fetchApis = async () => {
+const fetchApiRoutes = async () => {
   const getApis = getWrappedApiCall({
     apiName: 'initApis',
     apiCall: () => fetch('/api'),
   });
 
-  const { data: routes } = await getApis();
+  const { data: apiRoutes } = await getApis();
 
-  return routes.reduce((acc, { path, methods }) => {
+  return apiRoutes;
+};
+
+const createApiCallsFromRoutes = (apiRoutes) => {
+  const apiCalls = apiRoutes.reduce((acc, { path, methods }) => {
     debug('fetchApis', path);
     if (path !== '/') {
       Object.keys(methods).forEach((method) => {
@@ -189,7 +193,9 @@ const fetchApis = async () => {
       });
     }
     return acc;
-  }, getCustomApis());
+  }, getCustomApiCalls());
+
+  return apiCalls;
 };
 
 const useApi = () => {
@@ -221,22 +227,27 @@ const useApi = () => {
   useEffect(() => {
     if (!MODULE.apiStore) {
       // Only run once on module loaded
-      fetchApis().then((wrappedApis) => {
-        MODULE.apiStore = wrappedApis;
-        debug('apiStore', MODULE.apiStore);
-        setApis(wrappedApis);
-      });
+      fetchApiRoutes()
+        .then(createApiCallsFromRoutes)
+        .then((apiCalls) => {
+          // Store the `apiCalls` to only do this once for the App <= TODO! Not working
+          MODULE.apiStore = apiCalls;
+          debug('apiStore', MODULE.apiStore);
+          setApis(apiCalls);
+        });
     }
   }, []);
 
   // Every time, re-wrap the apis and their the updated state in the proxy
-  return Object.entries(apis).reduce(
+  const statefulApis = Object.entries(apis).reduce(
     (acc, [apiName, apiCall]) => ({
       ...acc,
       [apiName]: createApiProxy(apiCall, apiStates[apiName]),
     }),
     {},
   );
+
+  return statefulApis;
 };
 
 export { useApi };
