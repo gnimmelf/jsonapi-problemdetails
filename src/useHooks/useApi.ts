@@ -34,19 +34,6 @@ const fetchStateProxyHandler = {
       // Methods
       case 'call':
         return target.apiCall;
-      /* eslint-disable no-return-assign */
-      /* eslint-disable no-param-reassign */
-      case 'setIdle':
-        return () => (target.fetchState = FETCH_STATES.IDLE);
-      case 'setPending':
-        return () => (target.fetchState = FETCH_STATES.PENDING);
-      case 'setSuccess':
-        return () => (target.fetchState = FETCH_STATES.SUCCESS);
-      case 'setFailed':
-        return () => (target.fetchState = FETCH_STATES.FAILED);
-      /* eslint-enable no-param-reassign */
-      /* eslint-enable no-return-assign */
-
       // Props
       case 'isIdle':
         return target.fetchState === FETCH_STATES.IDLE;
