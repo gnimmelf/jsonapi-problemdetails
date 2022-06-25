@@ -4,6 +4,12 @@ import slugify from 'slugify';
 
 const api = express.Router();
 
+api.use((req, res, next) => {
+  setTimeout(() => {
+    next();
+  }, 500);
+})
+
 const routes = [];
 
 const devs = [

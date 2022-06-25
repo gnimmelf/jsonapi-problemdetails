@@ -7,6 +7,7 @@ import { AppContextProvider } from './components/app-context/AppContext';
 import { Notifications } from './components/notifications/Notifications';
 import { ApiList } from './components/api-list/ApiList';
 import { FormTest } from './components/form-test/FormTest';
+import { ApiTest } from './components/api-test/ApiTest';
 
 import 'feather-icons';
 import './styles/index.scss';
@@ -50,8 +51,9 @@ const App = (): FC => {
           </BlInfoBox>
         </div>
 
-        <FormTest />
-        <ApiList />
+        {/* <FormTest /> */}
+        {/* <ApiList /> */}
+        <ApiTest />
       </div>
     </AppContextProvider>
   );
