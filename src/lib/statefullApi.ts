@@ -1,8 +1,7 @@
 export const API_STATES = Object.freeze({
   IDLE: 'IDLE',
   PENDING: 'PENDING',
-  SUCCESS: 'SUCCESS',
-  FAILED: 'FAILED',
+  DONE: 'DONE',
 });
 
 const apiStateProxyHandler = {
@@ -16,10 +15,8 @@ const apiStateProxyHandler = {
         return target.reqState === API_STATES.IDLE;
       case 'isPending':
         return target.reqState === API_STATES.PENDING;
-      case 'isSuccess':
-        return target.reqState === API_STATES.SUCCESS;
-      case 'isFailed':
-        return target.reqState === API_STATES.FAILED;
+      case 'isDone':
+        return target.reqState === API_STATES.DONE;
       default:
         return target[prop];
     }
@@ -42,7 +39,7 @@ export const createStatefullApi = (apiState) => {
   return new Proxy(apiState, apiStateProxyHandler);
 };
 
-export const createApiState = ({
+export const createApiStateValue = ({
   apiName,
   apiCall,
   reqState,

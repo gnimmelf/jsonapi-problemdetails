@@ -6,7 +6,7 @@ import { useNotifications } from './useNotifications';
 import {
   API_STATES,
   createStatefullApi,
-  createApiState,
+  createApiStateValue,
 } from '../lib/statefullApi';
 
 import { logError } from '../helpers/logError';
@@ -14,7 +14,7 @@ import { createDebugger } from '../helpers/createDebugger';
 
 const debug = createDebugger(__filename);
 
-const createEnhancedApiCall = ({
+const createApiCallWrapper = ({
   apiName,
   apiCall,
   resultParser,
@@ -36,7 +36,7 @@ const createEnhancedApiCall = ({
     try {
       response = await apiCall(...args);
 
-      result = resultParser ? resultParser(response) : await response.json();
+      result = await (resultParser ? resultParser(response) : response.json());
 
       debug('fetchParsed', { response, result });
     } catch (err) {
@@ -75,7 +75,7 @@ const createEnhancedApiCall = ({
     debug(`enhancedApiCall:${apiName}`, { result });
 
     setApiState({
-      reqState: API_STATES[result.meta.success ? 'SUCCESS' : 'FAILED'],
+      reqState: API_STATES.DONE,
       result,
     });
 
@@ -84,20 +84,25 @@ const createEnhancedApiCall = ({
 };
 
 const createSetApiState =
-  ({ apiName, apiState, setAppState }) =>
+  ({ apiName, apiStateValue, setAppState }) =>
   ({ reqState, result = undefined }) => {
     setAppState((prev) => {
+      // On first run `prev.apiStates` does not exist
       const prevApiStates = prev?.apiStates || {};
-      const prevApiState = prevApiStates[apiName] || apiState;
+
+      // The next state for this `apiName`
+      const nextApiState = {
+        ...(prevApiStates[apiName] || apiStateValue),
+        result: result || apiStateValue.result,
+        reqState,
+      };
+
+      // Rebuild the entirity of the `next` appState
       const next = {
         ...prev,
         apiStates: {
           ...prevApiStates,
-          [apiName]: {
-            ...prevApiState,
-            reqState,
-            result: result || apiState.result,
-          },
+          [apiName]: nextApiState,
         },
       };
       debug('setApiState', { prev, next });
@@ -115,19 +120,21 @@ const useApi = ({
   const [{ apiStates }, setAppState] = useAppContext();
 
   // Get current or create a new `apiState` object
-  let apiState = (apiStates || {})[apiName];
-  if (!apiState) {
-    apiState = createApiState({
+  let apiStateValue = (apiStates || {})[apiName];
+  if (!apiStateValue) {
+    apiStateValue = createApiStateValue({
       apiName,
       result: initialValue,
     });
   }
 
-  const setApiState = createSetApiState({ apiName, apiState, setAppState });
+  const setApiState = createSetApiState({
+    apiName,
+    apiStateValue,
+    setAppState,
+  });
 
-  debug('apiState.apiCall', apiState.apiCall);
-
-  const enhancedApiCall = createEnhancedApiCall({
+  const apiCallWrapper = createApiCallWrapper({
     apiName,
     apiCall,
     resultParser,
@@ -136,14 +143,15 @@ const useApi = ({
   });
 
   useEffect(() => {
-    if (!apiState.apiCall) {
+    if (!apiStateValue.apiCall) {
+      // On initial `apiState`, the callWrapper has not yet been setOn the state value object
       debug(`Should only happen once for '${apiName}'!`);
-      apiState.apiCall = enhancedApiCall;
-      setApiState(apiState);
+      apiStateValue.apiCall = apiCallWrapper;
+      setApiState(apiStateValue);
     }
   }, []);
 
-  return createStatefullApi(apiState);
+  return createStatefullApi(apiStateValue);
 };
 
 export { useApi };
