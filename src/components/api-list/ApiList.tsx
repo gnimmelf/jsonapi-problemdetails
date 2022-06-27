@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import { useApi } from '../../useHooks/useApi';
+import { useApi } from '../../useHooks/useStatefullApi';
 
 import { createDebugger } from '../../helpers/createDebugger';
 

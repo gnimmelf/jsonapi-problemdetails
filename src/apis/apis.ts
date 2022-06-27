@@ -12,29 +12,29 @@ const getCustomApiCalls = () => ({
     }),
   });
 
-  const fetchApiRoutes = async () => {
-    const getApis = getWrappedApiCall({
-      apiName: 'initApis',
-      apiCall: () => fetch('/api'),
-    });
+const fetchApiRoutes = async () => {
+  const getApis = getWrappedApiCall({
+    apiName: 'initApis',
+    apiCall: () => fetch('/api'),
+  });
 
-    const { data: apiRoutes } = await getApis();
+  const { data: apiRoutes } = await getApis();
 
-    return apiRoutes;
-  };
+  return apiRoutes;
+};
 
-  const createApiCallsFromRoutes = (apiRoutes) => {
-    const apiCalls = apiRoutes.reduce((acc, { path, methods }) => {
-      debug('fetchApis', path);
-      if (path !== '/') {
-        Object.keys(methods).forEach((method) => {
-          const apiName = hyphenToCamelCase([method, slugify(path)].join('-'));
-          acc[apiName] = () => fetch(`/api${path}`, { method }),
-          });
+const createApiCallsFromRoutes = (apiRoutes) => {
+  const apiCalls = apiRoutes.reduce((acc, { path, methods }) => {
+    debug('fetchApis', path);
+    if (path !== '/') {
+      Object.keys(methods).forEach((method) => {
+        const apiName = hyphenToCamelCase([method, slugify(path)].join('-'));
+        acc[apiName] = () => fetch(`/api${path}`, { method }),
         });
-      }
-      return acc;
-    }, getCustomApiCalls());
+      });
+    }
+    return acc;
+  }, getCustomApiCalls());
 
-    return apiCalls;
-  };
+  return apiCalls;
+};

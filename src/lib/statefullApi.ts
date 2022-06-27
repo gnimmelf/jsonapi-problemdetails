@@ -39,7 +39,7 @@ export const createStatefullApi = (apiState) => {
   return new Proxy(apiState, apiStateProxyHandler);
 };
 
-export const createApiStateValue = ({
+export const createApiState = ({
   apiName,
   apiCall,
   reqState,

@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 import { BlSelect } from 'buflib';
 
-import { useApi } from '../../useHooks/useApi';
+import { useStatefullApi } from '../../useHooks/useStatefullApi';
 import { useNotifications } from '../../useHooks/useNotifications';
 import { WARNING, ERROR } from '../../constants/systemNotificationTypes';
 
@@ -15,7 +15,7 @@ import { createDebugger } from '../../helpers/createDebugger';
 const debug = createDebugger(__filename);
 
 const TestForm: FC = ({ onDone }) => {
-  const apis = useApi();
+  const apis = useStatefullApi();
 
   const [selectedApiKey, setSelectedApiKey] = useState();
 

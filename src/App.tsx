@@ -20,7 +20,7 @@ const App = (): FC => {
   return (
     <AppContextProvider>
       <Notifications />
-      <div className="bl-container bl-container--small ">
+      <div className="bl-container bl-container--small bl-bg-violet-3">
         <div className="bl-grid bl-grid--two-columns bl-m-b-2">
           <BlInfoBox header="JSON API">
             <p>

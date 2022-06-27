@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState, useRef } from 'react';
+import React, { FC } from 'react';
 
-import { useApi } from '../../useHooks/useApi';
+import { useStatefullApi } from '../../useHooks/useStatefullApi';
 
 import { createDebugger } from '../../helpers/createDebugger';
 
@@ -8,16 +8,20 @@ const debug = createDebugger(__filename);
 
 const ApiTest: FC = () => {
   const apis = [
-    useApi({
+    useStatefullApi({
+      apiName: 'fields-invalid',
+      apiCall: () => fetch('/api/fields-invalid'),
+    }),
+    useStatefullApi({
       apiName: 'succes-data',
       apiCall: () => fetch('/api/success-data'),
       initialValue: { data: [] },
     }),
-    useApi({
+    useStatefullApi({
       apiName: 'badrequest',
       apiCall: () => fetch('/api/badrequest'),
     }),
-    useApi({
+    useStatefullApi({
       apiName: 'division-by-zero',
       apiCall: () => fetch('/api/division-by-zero'),
     }),
