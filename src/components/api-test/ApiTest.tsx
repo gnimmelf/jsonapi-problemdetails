@@ -7,10 +7,6 @@ import { createDebugger } from '../../helpers/createDebugger';
 const debug = createDebugger(__filename);
 
 const ApiTest: FC = () => {
-  const apiLog = useRef([]);
-
-  const [selectedApiName, setSelectedApiName] = useState(null);
-
   const apis = [
     useApi({
       apiName: 'succes-data',
@@ -27,37 +23,27 @@ const ApiTest: FC = () => {
     }),
   ];
 
-  if (selectedApiName) {
-    apiLog.current = apiLog.current.concat(
-      JSON.stringify(
-        apis.find(({ apiName }) => apiName === selectedApiName),
-        null,
-        2,
-      ),
-    );
-  }
-
-  debug('render', { apis, selectedApiName, log: apiLog.current });
+  debug('render', { apis });
 
   return (
     <>
       <h1>ApiTest</h1>
       {apis.map((api, idx) => (
-        <button
-          key={`key-${idx}`}
-          type="button"
-          disabled={api.isPending}
-          onClick={() => {
-            apiLog.current = [JSON.stringify(api, null, 2)];
-            setSelectedApiName(api.apiName);
-            api.call();
-          }}
-        >
-          {api.apiName}
-        </button>
-      ))}
-      {apiLog.current.map((log, idx) => (
-        <pre key={`key-${idx}`}>{log}</pre>
+        <div key={`key-${idx}`}>
+          {api.isIdle && <div>Not called yet</div>}
+          {api.isPending && <div>Calling...</div>}
+          {api.isDone && <div>Allredy called</div>}
+          <button
+            type="button"
+            disabled={api.isPending}
+            onClick={() => {
+              api.call();
+            }}
+          >
+            {api.apiName}
+          </button>
+          <pre>{JSON.stringify(api, null, 2)}</pre>
+        </div>
       ))}
     </>
   );

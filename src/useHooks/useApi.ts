@@ -8,84 +8,13 @@ import {
   createStatefullApi,
   createApiStateValue,
 } from '../lib/statefullApi';
-
-import { logError } from '../helpers/logError';
+import { createApiCallWrapper } from '../lib/createApiCallWrapper';
 import { createDebugger } from '../helpers/createDebugger';
 
 const debug = createDebugger(__filename);
 
-const createApiCallWrapper = ({
-  apiName,
-  apiCall,
-  resultParser,
-  setApiState,
-  notifications,
-}) => {
-  const { addSystemError } = notifications;
-  const { location } = window;
-  const typeUrlBase = `${location.protocol}://${location.host}/error-type`;
-
-  return async (...args) => {
-    const signal = args.find((arg) => arg instanceof AbortSignal) || {};
-
-    let response;
-    let result;
-
-    setApiState({ reqState: API_STATES.PENDING });
-
-    try {
-      response = await apiCall(...args);
-
-      result = await (resultParser ? resultParser(response) : response.json());
-
-      debug('fetchParsed', { response, result });
-    } catch (err) {
-      result = { meta: { catchBlockError: true } };
-      if (signal.aborted) {
-        result.type = `${typeUrlBase}/request-aborted`;
-        result.title = 'Request was cancelled';
-        result.details = `Request for (${apiName}) was aborted by signal`;
-      } else {
-        result.type = `${typeUrlBase}/response-parsing-error`;
-        result.title = 'Client side parsing error';
-        result.details = err.toString();
-      }
-    }
-
-    if (!result.meta) {
-      result.meta = {};
-    }
-
-    Object.assign(result.meta, {
-      url: response.url,
-      status: response.status,
-      success: !result.meta.catchBlockError && response.status === 200,
-    });
-
-    if (
-      !result.meta.success &&
-      (result.meta.status >= 500 ||
-        result.type.endsWith('response-parsing-error'))
-    ) {
-      result.meta.isRuntimeException = true;
-      addSystemError(`[Beskrivelse for "${result.type}"]`);
-      logError(result);
-    }
-
-    debug(`enhancedApiCall:${apiName}`, { result });
-
-    setApiState({
-      reqState: API_STATES.DONE,
-      result,
-    });
-
-    return result;
-  };
-};
-
-const createSetApiState =
-  ({ apiName, apiStateValue, setAppState }) =>
-  ({ reqState, result = undefined }) => {
+const createSetApiState = ({ apiName, apiStateValue, setAppState }) => {
+  const setApiState = ({ reqState, result = undefined }) => {
     setAppState((prev) => {
       // On first run `prev.apiStates` does not exist
       const prevApiStates = prev?.apiStates || {};
@@ -93,6 +22,7 @@ const createSetApiState =
       // The next state for this `apiName`
       const nextApiState = {
         ...(prevApiStates[apiName] || apiStateValue),
+        // Result is eiter passed or is initial value
         result: result || apiStateValue.result,
         reqState,
       };
@@ -109,6 +39,8 @@ const createSetApiState =
       return next;
     });
   };
+  return setApiState;
+};
 
 const useApi = ({
   apiName,
@@ -116,7 +48,7 @@ const useApi = ({
   initialValue = null,
   resultParser = null,
 }) => {
-  const notifications = useNotifications();
+  const { addSystemError } = useNotifications();
   const [{ apiStates }, setAppState] = useAppContext();
 
   // Get current or create a new `apiState` object
@@ -138,15 +70,21 @@ const useApi = ({
     apiName,
     apiCall,
     resultParser,
-    setApiState,
-    notifications,
+    onPending: () => setApiState({ reqState: API_STATES.PENDING }),
+    onComplete: (result) => {
+      setApiState({ reqState: API_STATES.DONE, result });
+      if (result.meta.isRuntimeException) {
+        addSystemError(`[Beskrivelse for "${result.type}"]`);
+      }
+    },
   });
 
   useEffect(() => {
     if (!apiStateValue.apiCall) {
-      // On initial `apiState`, the callWrapper has not yet been setOn the state value object
       debug(`Should only happen once for '${apiName}'!`);
+      // Startup: set the callWrapper on the `apiStateValue` object
       apiStateValue.apiCall = apiCallWrapper;
+      // And then "insert" the first state for this api
       setApiState(apiStateValue);
     }
   }, []);
