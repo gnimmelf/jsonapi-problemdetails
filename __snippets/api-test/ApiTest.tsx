@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { useStatefullApi } from '../../useHooks/useStatefullApi';
+import { useStatefullApi } from '../../useHooks/useStatefullApiWithContext';
 
 import { createDebugger } from '../../helpers/createDebugger';
 

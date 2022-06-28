@@ -2,35 +2,28 @@ import React, { FC, useEffect, useState } from 'react';
 
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-import { BlSelect } from 'buflib';
+import { useApiReq } from '../../useHooks/useApiReqWithContext';
+// import { useApiReq } from '../../useHooks/useStatefullApiWithUseState';
 
-import { useStatefullApi } from '../../useHooks/useStatefullApi';
 import { useNotifications } from '../../useHooks/useNotifications';
 import { WARNING, ERROR } from '../../constants/systemNotificationTypes';
-
 import { messageTypeClassNames } from '../notifications/Notifications';
 
 import { createDebugger } from '../../helpers/createDebugger';
 
 const debug = createDebugger(__filename);
 
-const TestForm: FC = ({ onDone }) => {
-  const apis = useStatefullApi();
+const FormTest: FC = ({ apiName, apiCall, onDone }) => {
+  const { addSystemMessage } = useNotifications();
 
-  const [selectedApiKey, setSelectedApiKey] = useState();
+  const apiReq = useApiReq({ apiName, apiCall });
 
   const validateForm = (values) => {
     debug('validateForm', { values });
     return {};
   };
 
-  const apisCount = Object.keys(apis).length;
-
-  useEffect(() => {
-    setSelectedApiKey(Object.keys(apis)[0]);
-  }, [apisCount]);
-
-  debug('render', { apis, selectedApiKey }, apisCount);
+  debug('render', { apiReq, apiCall, apiName });
 
   return (
     <Formik
@@ -43,18 +36,12 @@ const TestForm: FC = ({ onDone }) => {
         const { setErrors } = actions;
         const errors = {};
 
-        debug(`onSubmit:${selectedApiKey}#1`, {
-          values,
-          actions,
-          api: apis[selectedApiKey],
-          call: apis[selectedApiKey].call,
-        });
-        const res = await apis[selectedApiKey].call(values);
-        debug(`onSubmit:${selectedApiKey}#2`, { res });
+        const res = await apiReq.call(values);
 
-        if (!res.meta.success) {
+        if (res.meta.success) {
+          addSystemMessage(`Ok ${apiName}`);
+        } else {
           const errorType = res.type.split('/').pop();
-          debug(`onSubmit:${selectedApiKey}#3`, { errorType });
           switch (errorType) {
             case 'fields-invalid':
             case 'fields-conflict':
@@ -77,7 +64,6 @@ const TestForm: FC = ({ onDone }) => {
         }
         setErrors(errors);
         onDone(res, values);
-        debug(`onSubmit:${selectedApiKey}#4`, { errors });
       }}
       validate={validateForm}
     >
@@ -141,27 +127,11 @@ const TestForm: FC = ({ onDone }) => {
               <div className=" bl-grid__full bl-text-center">
                 <button
                   type="submit"
-                  disabled={isSubmitting || !apis[selectedApiKey]}
+                  disabled={isSubmitting || !apiReq}
                   className="bl-button bl-button--primary"
                 >
-                  Submit to {selectedApiKey}
+                  Submit to {apiReq.apiName}
                 </button>
-              </div>
-
-              <div className=" bl-grid__full bl-text-center">
-                <BlSelect
-                  value={selectedApiKey}
-                  className="bl-p-a-1"
-                  onChange={({ target }) => {
-                    setSelectedApiKey(target.value);
-                  }}
-                >
-                  {Object.keys(apis).map((apiKey) => (
-                    <option key={apiKey} value={apiKey}>
-                      {apiKey}
-                    </option>
-                  ))}
-                </BlSelect>
               </div>
             </div>
           </Form>
@@ -169,19 +139,6 @@ const TestForm: FC = ({ onDone }) => {
       }}
     </Formik>
   );
-};
-
-const FormTest: FC = () => {
-  const { addSystemMessage } = useNotifications();
-
-  const onDone = (res, requestData) => {
-    debug('onDone', { res, requestData });
-    if (res.meta.success) {
-      addSystemMessage(`success: ${res.meta.url}`);
-    }
-  };
-
-  return <TestForm onDone={onDone} />;
 };
 
 export { FormTest };

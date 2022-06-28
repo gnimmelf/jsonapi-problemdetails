@@ -55,6 +55,12 @@ api.get('/', (req, res) => {
   res.json(success(routes));
 });
 
+// 200 Non-json
+
+api.get('/get-html', (req, res) => {
+  res.status(200).send('Hello world!');
+});
+
 // 200
 
 api.get('/success-empty', (req, res) => {

@@ -1,13 +1,14 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 
-import { useApi } from '../../useHooks/useStatefullApi';
+import { useStatefullApi } from '../../useHooks/useStatefullApiWithContext';
 
 import { createDebugger } from '../../helpers/createDebugger';
 
 const debug = createDebugger(__filename);
 
 const ApiList = (): FC => {
-  const apis = useApi();
+  // TODO! Get apis
+  const apis = useStatefullApi();
 
   const [isOpenStates, setIsOpenStates] = useState({});
 

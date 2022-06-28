@@ -17,6 +17,10 @@ const apiStateProxyHandler = {
         return target.reqState === API_STATES.PENDING;
       case 'isDone':
         return target.reqState === API_STATES.DONE;
+      case 'isSuccess':
+        return (
+          target.reqState === API_STATES.DONE && target.result.meta.success
+        );
       default:
         return target[prop];
     }
@@ -35,18 +39,15 @@ const apiStateProxyHandler = {
   },
 };
 
-export const createStatefullApi = (apiState) => {
+const createStatefullApi = (apiState) => {
   return new Proxy(apiState, apiStateProxyHandler);
 };
 
-export const createApiState = ({
-  apiName,
-  apiCall,
-  reqState,
-  result,
-} = {}) => ({
+const createApiState = ({ apiName, apiCall, reqState, result }) => ({
   apiName,
   apiCall,
   result: result || null,
   reqState: reqState || API_STATES.IDLE,
 });
+
+export { createStatefullApi, createApiState };

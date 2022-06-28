@@ -5,9 +5,7 @@ import { BlInfoBox } from 'buflib';
 
 import { AppContextProvider } from './components/app-context/AppContext';
 import { Notifications } from './components/notifications/Notifications';
-import { ApiList } from './components/api-list/ApiList';
-import { FormTest } from './components/form-test/FormTest';
-import { ApiTest } from './components/api-test/ApiTest';
+import { Driver } from './components/driver/Driver';
 
 import 'feather-icons';
 import './styles/index.scss';
@@ -20,7 +18,7 @@ const App = (): FC => {
   return (
     <AppContextProvider>
       <Notifications />
-      <div className="bl-container bl-container--small bl-bg-violet-3">
+      <div className="bl-container bl-container--small bl-bg-violet-3 bl-p-a-2">
         <div className="bl-grid bl-grid--two-columns bl-m-b-2">
           <BlInfoBox header="JSON API">
             <p>
@@ -50,10 +48,7 @@ const App = (): FC => {
             </p>
           </BlInfoBox>
         </div>
-
-        {/* <FormTest /> */}
-        {/* <ApiList /> */}
-        <ApiTest />
+        <Driver />
       </div>
     </AppContextProvider>
   );

@@ -4,7 +4,7 @@ import { createDebugger } from '../helpers/createDebugger';
 
 const debug = createDebugger(__filename);
 
-export const createApiCallWrapper = ({
+const createApiCallWrapper = ({
   apiName,
   apiCall,
   resultParser,
@@ -15,6 +15,8 @@ export const createApiCallWrapper = ({
   const typeUrlBase = `${location.protocol}://${location.host}/error-type`;
 
   return async (...args) => {
+    debug(`enhancedApiCall:${apiName}`, { apiName, apiCall, resultParser });
+
     const signal = args.find((arg) => arg instanceof AbortSignal) || {};
 
     let response;
@@ -24,10 +26,9 @@ export const createApiCallWrapper = ({
 
     try {
       response = await apiCall(...args);
-
       result = await (resultParser ? resultParser(response) : response.json());
-      debug('fetchParsed', { response, result });
     } catch (err) {
+      logError(err);
       result = { meta: { catchBlockError: true } };
       if (signal.aborted) {
         result.type = `${typeUrlBase}/request-aborted`;
@@ -56,7 +57,7 @@ export const createApiCallWrapper = ({
         result.type.endsWith('response-parsing-error'))
     ) {
       result.meta.isRuntimeException = true;
-      logError(result);
+      // logError(result);
     }
 
     debug(`enhancedApiCall:${apiName}`, { result });
@@ -66,3 +67,10 @@ export const createApiCallWrapper = ({
     return result;
   };
 };
+
+const getResultFieldErrors = (result, fieldName) =>
+  (result?.errors || [])
+    .filter(({ name }) => fieldName === name)
+    .map(({ reason }) => reason);
+
+export { createApiCallWrapper, getResultFieldErrors };
