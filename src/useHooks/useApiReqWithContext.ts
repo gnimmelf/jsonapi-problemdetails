@@ -4,10 +4,10 @@ import { useAppContext } from './useAppContext';
 import { useNotifications } from './useNotifications';
 
 import {
-  API_STATES,
-  createStatefullApi,
-  createApiState,
-} from '../lib/statefullApi';
+  API_REQ_STATES,
+  createApiReqProxy,
+  createApiReqState,
+} from '../lib/apiReqState';
 import { createApiCallWrapper } from '../lib/createApiCallWrapper';
 import { createDebugger } from '../helpers/createDebugger';
 
@@ -20,43 +20,43 @@ const useApiReq = ({
   resultParser = null,
 }) => {
   const { addSystemError } = useNotifications();
-  const [{ apiStates }, setAppState] = useAppContext();
+  const [{ apiReqStates }, setAppState] = useAppContext();
 
-  const setApiState = ({ reqState, result = undefined }) =>
+  const setApiReqState = ({ reqState, result = undefined }) =>
     setAppState((prev) => {
-      debug('setApiState', { prev });
+      debug('setApiReqState', { prev });
       // The prev state for this `apiName`
-      const prevApiState = prev.apiStates[apiName] || {};
+      const prevApiReqState = prev.apiReqStates[apiName] || {};
       // The next state for this `apiName`
-      const nextApiState = createApiState({
-        ...prev.apiStates[apiName],
+      const nextApiReqState = createApiReqState({
+        ...prev.apiReqStates[apiName],
         reqState,
-        result: result || prevApiState.result,
+        result: result || prevApiReqState.result,
       });
 
       // Rebuild the entirity of the `next` appState
       const next = {
         ...prev,
-        apiStates: {
-          ...prev.apiStates,
-          [apiName]: nextApiState,
+        apiReqStates: {
+          ...prev.apiReqStates,
+          [apiName]: nextApiReqState,
         },
       };
-      debug('setApiState', { prev, next });
+      debug('setApiReqState', { prev, next });
       return next;
     });
 
   // Build initial state
-  const apiState = (apiStates || {})[apiName] || {};
+  const apiState = (apiReqStates || {})[apiName] || {};
 
   if (apiState.apiName !== apiName) {
     // Initial run
     const wrappedApiCall = createApiCallWrapper({
       apiName,
       apiCall,
-      onPending: () => setApiState({ reqState: API_STATES.PENDING }),
+      onPending: () => setApiReqState({ reqState: API_REQ_STATES.PENDING }),
       onComplete: (result) => {
-        setApiState({ reqState: API_STATES.DONE, result });
+        setApiReqState({ reqState: API_REQ_STATES.DONE, result });
         if (result.meta.isRuntimeException) {
           addSystemError(`[Beskrivelse for "${result.type}"]`);
         }
@@ -66,7 +66,7 @@ const useApiReq = ({
 
     Object.assign(
       apiState,
-      createApiState({
+      createApiReqState({
         apiName,
         apiCall: wrappedApiCall,
         result: { data: initialResultData },
@@ -79,14 +79,14 @@ const useApiReq = ({
     debug(`Should only run once for api '${apiName}'`);
     setAppState((prev) => ({
       ...prev,
-      apiStates: {
-        ...prev.apiStates,
+      apiReqStates: {
+        ...prev.apiReqStates,
         [apiName]: apiState,
       },
     }));
   }, [apiState.apiName]);
 
-  return createStatefullApi(apiState);
+  return createApiReqProxy(apiState);
 };
 
 export { useApiReq };

@@ -5,10 +5,10 @@ import {
   getResultFieldErrors,
 } from '../lib/createApiCallWrapper';
 import {
-  API_STATES,
-  createStatefullApi,
-  createApiState,
-} from '../lib/statefullApi';
+  API_REQ_STATES,
+  createApiReqProxy,
+  createApiReqState,
+} from '../lib/apiReqState';
 
 import { useNotifications } from './useNotifications';
 
@@ -23,25 +23,25 @@ const useApiReq = ({
   resultParser = null,
 }) => {
   const { addSystemError } = useNotifications();
-  const [apiState, setState] = useState({});
+  const [apiReqState, setState] = useState({});
 
-  const setApiState = ({ reqState, result = undefined }) =>
+  const setApiReqState = ({ reqState, result = undefined }) =>
     setState((prev) => {
-      debug('setApiState', { prev });
-      return createApiState({ ...prev, reqState, result });
+      debug('setApiReqState', { prev });
+      return createApiReqState({ ...prev, reqState, result });
     });
 
   // Build initial state
-  debug('useApiReq', { apiState });
+  debug('useApiReq', { apiReqState });
 
-  if (apiState.apiName !== apiName) {
+  if (apiReqState.apiName !== apiName) {
     // Initial run
     const wrappedApiCall = createApiCallWrapper({
       apiName,
       apiCall,
-      onPending: () => setApiState({ reqState: API_STATES.PENDING }),
+      onPending: () => setApiReqState({ reqState: API_REQ_STATES.PENDING }),
       onComplete: (result) => {
-        setApiState({ reqState: API_STATES.DONE, result });
+        setApiReqState({ reqState: API_REQ_STATES.DONE, result });
         if (result.meta.isRuntimeException) {
           addSystemError(`[Beskrivelse for "${result.type}"]`);
         }
@@ -50,8 +50,8 @@ const useApiReq = ({
     });
 
     Object.assign(
-      apiState,
-      createApiState({
+      apiReqState,
+      createApiReqState({
         apiName,
         apiCall: wrappedApiCall,
         result: { data: initialResultData },
@@ -61,10 +61,10 @@ const useApiReq = ({
 
   useEffect(() => {
     // Insert the first state for this api
-    setState(createApiState(apiState));
-  }, [apiState.apiName]);
+    setState(createApiReqState(apiReqState));
+  }, [apiReqState.apiName]);
 
-  return createStatefullApi(apiState);
+  return createApiReqProxy(apiReqState);
 };
 
 export { useApiReq, getResultFieldErrors };
