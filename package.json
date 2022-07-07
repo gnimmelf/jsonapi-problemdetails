@@ -1,12 +1,13 @@
 {
   "name": "private",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "npm run dev:server & npm run dev:client",
     "dev:client": "ENV=dev npm run build:client",
     "build:client": "node .esbuild/index.mjs",
-    "dev:server": "nodemon server/index.mjs --watch server"
+    "dev:server": "nodemon server/index.mjs --watch server",
+    "zod": "node ./zod/zod-to-ts.mjs"
   },
   "author": "",
   "license": "ISC",

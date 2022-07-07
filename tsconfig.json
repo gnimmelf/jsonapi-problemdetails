@@ -1,6 +1,6 @@
 {
   "parserOptions": {
-    "extraFileExtensions": [".mjs"]
+    // "extraFileExtensions": [".mjs"]
   },
   "compilerOptions": {
     "baseUrl": "./",
@@ -20,5 +20,5 @@
     "noEmit": true,
     "jsx": "react"
   },
-  "include": ["src"]
+  "include": ["src", "zod"]
 }
